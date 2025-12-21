@@ -1,27 +1,22 @@
-export interface CourseSection {
-  section: string;
-  room: string;
-  days: string[];
-  slots: number[];
-  timeRanges: string[];
+export interface ChronoSection {
+  instructor: string[];
+  schedule: {
+    room: string;
+    days: string[];
+    hours: number[];
+  }[];
 }
 
-export interface Course {
-  title: string;
-  credits: number;
-  L: number;
-  P: number;
-  sections: {
-    L: CourseSection[];
-    T: CourseSection[];
-    P: CourseSection[];
-  };
+export interface ChronoCourse {
+  units: number;
+  course_name: string;
+  sections: Record<string, ChronoSection>;
+  exams?: { midsem: string; compre: string }[];
 }
 
-export interface CourseData {
-  semester: string;
-  slotMap: Record<string, string>;
-  courses: Record<string, Course>;
+export interface ChronoData {
+  metadata: { acadYear: number; semester: number };
+  courses: Record<string, ChronoCourse>;
 }
 
 export interface SelectedCourse {
@@ -29,26 +24,25 @@ export interface SelectedCourse {
   courseTitle: string;
   credits: number;
   grade: string;
-  lectureSection?: string;
-  tutorialSection?: string;
-  practicalSection?: string;
 }
 
-export interface TimetableEntry {
+export interface SelectedSection {
   courseCode: string;
+  courseTitle: string;
+  sectionType: 'L' | 'T' | 'P';
   section: string;
+  instructor: string[];
   room: string;
   days: string[];
   slots: number[];
-  timeRanges: string[];
 }
 
 export interface AttendanceRecord {
   date: string;
   courseCode: string;
   section: string;
+  slot: number;
   status: 'present' | 'absent' | 'cancelled' | null;
-  timeRange: string;
 }
 
 export interface CalendarEvent {

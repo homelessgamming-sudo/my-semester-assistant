@@ -1,20 +1,9 @@
 import { useMemo } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { DAY_NAMES, SLOT_MAP } from '@/types';
+import { SelectedSection, DAY_NAMES, SLOT_MAP } from '@/types';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
-import { Check, X, Ban, RotateCcw, Calendar, Clock, MapPin } from 'lucide-react';
-
-interface SelectedSection {
-  courseCode: string;
-  courseTitle: string;
-  sectionType: 'L' | 'T' | 'P';
-  section: string;
-  room: string;
-  days: string[];
-  slots: number[];
-  timeRanges: string[];
-}
+import { Check, X, Ban, RotateCcw, Calendar, Clock, MapPin, User } from 'lucide-react';
 
 interface AttendanceRecord {
   date: string;
@@ -48,7 +37,7 @@ export function AttendanceTracker() {
     selectedSections.forEach((entry) => {
       if (entry.days.includes(todayCode)) {
         entry.slots.forEach((slot) => {
-          if (slot <= 11) {
+          if (slot >= 1 && slot <= 11) {
             classes.push({ entry, slot });
           }
         });
@@ -104,7 +93,6 @@ export function AttendanceTracker() {
   };
 
   const stats = useMemo(() => {
-    const totalRecords = attendanceRecords.length;
     const present = attendanceRecords.filter((r) => r.status === 'present').length;
     const absent = attendanceRecords.filter((r) => r.status === 'absent').length;
     const cancelled = attendanceRecords.filter((r) => r.status === 'cancelled').length;
@@ -175,6 +163,10 @@ export function AttendanceTracker() {
                         <span className="flex items-center gap-1">
                           <MapPin className="w-4 h-4" />
                           {entry.room}
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <User className="w-4 h-4" />
+                          {entry.instructor[0]}
                         </span>
                         <span className={`px-2 py-0.5 rounded-full text-xs ${
                           entry.sectionType === 'L' ? 'bg-primary/30' :
