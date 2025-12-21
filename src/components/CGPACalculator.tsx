@@ -4,17 +4,14 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { CourseData, SelectedCourse, GRADES } from '@/types';
+import { ChronoData, SelectedCourse, GRADES } from '@/types';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { Plus, Trash2, Calculator, BookOpen, TrendingUp, Search } from 'lucide-react';
-import courseData from '@/data/courses.json';
+import rawCourseData from '@/data/chronoscript-raw.json';
 
-interface CGPACalculatorProps {
-  onCoursesChange?: (courses: SelectedCourse[]) => void;
-}
+const courseData = rawCourseData as ChronoData;
 
-export function CGPACalculator({ onCoursesChange }: CGPACalculatorProps) {
-  const data = courseData as CourseData;
+export function CGPACalculator() {
   const [selectedCourses, setSelectedCourses] = useLocalStorage<SelectedCourse[]>('selectedCourses', []);
   const [selectedCourseCode, setSelectedCourseCode] = useState('');
   const [selectedGrade, setSelectedGrade] = useState('');
@@ -25,19 +22,18 @@ export function CGPACalculator({ onCoursesChange }: CGPACalculatorProps) {
   const addCourse = () => {
     if (!selectedCourseCode || !selectedGrade) return;
 
-    const course = data.courses[selectedCourseCode];
+    const course = courseData.courses[selectedCourseCode];
     if (!course) return;
 
     const newCourse: SelectedCourse = {
       courseCode: selectedCourseCode,
-      courseTitle: course.title,
-      credits: course.credits,
+      courseTitle: course.course_name,
+      credits: course.units,
       grade: selectedGrade,
     };
 
     const updated = [...selectedCourses, newCourse];
     setSelectedCourses(updated);
-    onCoursesChange?.(updated);
     setSelectedCourseCode('');
     setSelectedGrade('');
   };
@@ -45,7 +41,6 @@ export function CGPACalculator({ onCoursesChange }: CGPACalculatorProps) {
   const removeCourse = (courseCode: string) => {
     const updated = selectedCourses.filter((c) => c.courseCode !== courseCode);
     setSelectedCourses(updated);
-    onCoursesChange?.(updated);
   };
 
   const { sgpa, cgpa } = useMemo(() => {
@@ -65,16 +60,15 @@ export function CGPACalculator({ onCoursesChange }: CGPACalculatorProps) {
   }, [selectedCourses, previousCredits, previousGradePoints]);
 
   const availableCourses = useMemo(() => {
-    return Object.entries(data.courses)
+    return Object.entries(courseData.courses)
       .filter(([code]) => !selectedCourses.find((c) => c.courseCode === code))
       .filter(([code, course]) => {
         if (!searchQuery) return true;
         const query = searchQuery.toLowerCase();
-        return code.toLowerCase().includes(query) || course.title.toLowerCase().includes(query);
+        return code.toLowerCase().includes(query) || course.course_name.toLowerCase().includes(query);
       })
-      .map(([code, course]) => ({ code, ...course }))
-      .slice(0, 50); // Limit for performance
-  }, [data.courses, selectedCourses, searchQuery]);
+      .slice(0, 100);
+  }, [selectedCourses, searchQuery]);
 
   const getGradeColor = (grade: string) => {
     if (grade === 'A' || grade === 'A-') return 'text-grade-a';
@@ -125,6 +119,14 @@ export function CGPACalculator({ onCoursesChange }: CGPACalculatorProps) {
         </Card>
       </div>
 
+      {/* Data Source Info */}
+      <Card className="glass-card p-4">
+        <p className="text-sm text-muted-foreground">
+          📚 Data source: <span className="text-primary font-medium">BITS Hyderabad - {courseData.metadata.acadYear}-{courseData.metadata.acadYear + 1} Semester {courseData.metadata.semester}</span>
+          {' '}• {Object.keys(courseData.courses).length} courses loaded from chronoscript
+        </p>
+      </Card>
+
       {/* Previous Semester (for CGPA) */}
       <Card className="glass-card p-6">
         <h3 className="font-semibold mb-4">Previous Semesters (Optional)</h3>
@@ -162,7 +164,7 @@ export function CGPACalculator({ onCoursesChange }: CGPACalculatorProps) {
           <Input
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search courses..."
+            placeholder="Search courses by code or name..."
             className="pl-10 bg-secondary/50 border-border/50"
           />
         </div>
@@ -173,10 +175,10 @@ export function CGPACalculator({ onCoursesChange }: CGPACalculatorProps) {
               <SelectTrigger className="bg-secondary/50 border-border/50">
                 <SelectValue placeholder="Select course" />
               </SelectTrigger>
-              <SelectContent className="max-h-[300px]">
-                {availableCourses.map((course) => (
-                  <SelectItem key={course.code} value={course.code}>
-                    {course.code} - {course.title} ({course.credits} cr)
+              <SelectContent className="max-h-[300px] bg-popover">
+                {availableCourses.map(([code, course]) => (
+                  <SelectItem key={code} value={code}>
+                    {code} - {course.course_name} ({course.units} cr)
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -187,7 +189,7 @@ export function CGPACalculator({ onCoursesChange }: CGPACalculatorProps) {
               <SelectTrigger className="bg-secondary/50 border-border/50">
                 <SelectValue placeholder="Grade" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-popover">
                 {Object.entries(GRADES).map(([grade, points]) => (
                   <SelectItem key={grade} value={grade}>
                     {grade} ({points})
@@ -210,7 +212,7 @@ export function CGPACalculator({ onCoursesChange }: CGPACalculatorProps) {
       {/* Selected Courses */}
       {selectedCourses.length > 0 && (
         <Card className="glass-card p-6">
-          <h3 className="font-semibold mb-4">Selected Courses</h3>
+          <h3 className="font-semibold mb-4">Selected Courses ({selectedCourses.length})</h3>
           <div className="space-y-3">
             {selectedCourses.map((course) => (
               <div

@@ -3,98 +3,78 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
-import { CourseData, SLOT_MAP, DAYS, DAY_NAMES } from '@/types';
+import { ChronoData, SelectedSection, SLOT_MAP, DAYS, DAY_NAMES } from '@/types';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
-import { Clock, Calendar, Plus, Trash2, Search, Info } from 'lucide-react';
-import courseData from '@/data/courses.json';
+import { Clock, Calendar, Plus, Trash2, Search, Info, User } from 'lucide-react';
+import rawCourseData from '@/data/chronoscript-raw.json';
 
-interface SelectedSection {
-  courseCode: string;
-  courseTitle: string;
-  sectionType: 'L' | 'T' | 'P';
-  section: string;
-  room: string;
-  days: string[];
-  slots: number[];
-  timeRanges: string[];
-}
+const courseData = rawCourseData as ChronoData;
 
 export function Timetable() {
-  const data = courseData as CourseData;
   const [selectedSections, setSelectedSections] = useLocalStorage<SelectedSection[]>('selectedSections', []);
   const [selectedCourseCode, setSelectedCourseCode] = useState('');
-  const [selectedSectionType, setSelectedSectionType] = useState<'L' | 'T' | 'P'>('L');
   const [selectedSectionName, setSelectedSectionName] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
 
-  const selectedCourse = selectedCourseCode ? data.courses[selectedCourseCode] : null;
+  const selectedCourse = selectedCourseCode ? courseData.courses[selectedCourseCode] : null;
 
-  // Get available section types for the selected course
-  const availableSectionTypes = useMemo(() => {
-    if (!selectedCourse?.sections) return { L: false, T: false, P: false };
-    return {
-      L: (selectedCourse.sections.L?.length || 0) > 0,
-      T: (selectedCourse.sections.T?.length || 0) > 0,
-      P: (selectedCourse.sections.P?.length || 0) > 0,
-    };
-  }, [selectedCourse]);
-
-  // Get unique section names for the selected type
+  // Get section types (L, T, P) and their available sections
   const availableSections = useMemo(() => {
     if (!selectedCourse?.sections) return [];
-    const sections = selectedCourse.sections[selectedSectionType] || [];
     
-    // Get unique section names
-    const uniqueNames = new Set<string>();
-    sections.forEach((s) => {
-      if (s.section) uniqueNames.add(s.section);
-    });
+    const sections: { name: string; type: 'L' | 'T' | 'P'; instructor: string[]; room: string }[] = [];
     
-    return Array.from(uniqueNames).map((name) => {
-      const firstEntry = sections.find((s) => s.section === name);
-      return {
-        section: name,
-        room: firstEntry?.room || 'TBA',
-      };
-    });
-  }, [selectedCourse, selectedSectionType]);
+    for (const [sectionName, sectionData] of Object.entries(selectedCourse.sections)) {
+      const type = sectionName.charAt(0) as 'L' | 'T' | 'P';
+      if (!['L', 'T', 'P'].includes(type)) continue;
+      
+      const firstSchedule = sectionData.schedule[0];
+      sections.push({
+        name: sectionName,
+        type,
+        instructor: sectionData.instructor,
+        room: firstSchedule?.room || 'TBA',
+      });
+    }
+    
+    return sections.sort((a, b) => a.name.localeCompare(b.name));
+  }, [selectedCourse]);
 
   const filteredCourses = useMemo(() => {
-    return Object.entries(data.courses)
+    return Object.entries(courseData.courses)
       .filter(([code, course]) => {
+        // Only show courses with sections
+        if (Object.keys(course.sections).length === 0) return false;
         if (!searchQuery) return true;
         const query = searchQuery.toLowerCase();
-        return code.toLowerCase().includes(query) || course.title.toLowerCase().includes(query);
+        return code.toLowerCase().includes(query) || course.course_name.toLowerCase().includes(query);
       })
       .slice(0, 100);
-  }, [data.courses, searchQuery]);
+  }, [searchQuery]);
 
   const addSection = () => {
-    if (!selectedCourseCode || !selectedSectionName || !selectedCourse?.sections) return;
+    if (!selectedCourseCode || !selectedSectionName || !selectedCourse) return;
 
-    // Get all entries for this section name
-    const allEntries = (selectedCourse.sections[selectedSectionType] || []).filter(
-      (s) => s.section === selectedSectionName
-    );
+    const sectionData = selectedCourse.sections[selectedSectionName];
+    if (!sectionData) return;
 
-    if (allEntries.length === 0) return;
+    const sectionType = selectedSectionName.charAt(0) as 'L' | 'T' | 'P';
 
-    // Add each entry as a separate section (same section can have multiple day/time entries)
-    const newSections: SelectedSection[] = allEntries.map((s) => ({
+    // Add each schedule entry as a separate section
+    const newSections: SelectedSection[] = sectionData.schedule.map((sched) => ({
       courseCode: selectedCourseCode,
-      courseTitle: selectedCourse.title,
-      sectionType: selectedSectionType,
-      section: s.section,
-      room: s.room,
-      days: s.days,
-      slots: s.slots.filter((slot) => slot >= 1 && slot <= 11),
-      timeRanges: s.timeRanges.filter((t) => !t.startsWith('UNKNOWN')),
+      courseTitle: selectedCourse.course_name,
+      sectionType,
+      section: selectedSectionName,
+      instructor: sectionData.instructor,
+      room: sched.room,
+      days: sched.days,
+      slots: sched.hours.filter((h) => h >= 1 && h <= 11),
     }));
 
     const updated = [...selectedSections, ...newSections];
     setSelectedSections(updated);
     setSelectedCourseCode('');
-    setSelectedSectionType('L');
     setSelectedSectionName('');
     setSearchQuery('');
   };
@@ -135,21 +115,21 @@ export function Timetable() {
     return 'bg-accent/50 border-accent text-foreground';
   };
 
-  // Reset section type and name when course changes
   const handleCourseChange = (code: string) => {
     setSelectedCourseCode(code);
     setSelectedSectionName('');
-    // Auto-select first available section type
-    const course = data.courses[code];
-    if (course?.sections) {
-      if (course.sections.L?.length > 0) setSelectedSectionType('L');
-      else if (course.sections.T?.length > 0) setSelectedSectionType('T');
-      else if (course.sections.P?.length > 0) setSelectedSectionType('P');
-    }
   };
 
   return (
     <div className="space-y-6">
+      {/* Data Source Info */}
+      <Card className="glass-card p-4">
+        <p className="text-sm text-muted-foreground">
+          📚 Data source: <span className="text-primary font-medium">BITS Hyderabad - {courseData.metadata.acadYear}-{courseData.metadata.acadYear + 1} Semester {courseData.metadata.semester}</span>
+          {' '}• Pulled from tabulr.net / chronoscript
+        </p>
+      </Card>
+
       {/* Add Section */}
       <Card className="glass-card p-6">
         <h3 className="font-semibold mb-4">Add Course Section</h3>
@@ -165,7 +145,7 @@ export function Timetable() {
           />
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {/* Course Selection */}
           <div className="space-y-1">
             <label className="text-xs text-muted-foreground">Course</label>
@@ -176,37 +156,9 @@ export function Timetable() {
               <SelectContent className="max-h-[300px] bg-popover">
                 {filteredCourses.map(([code, course]) => (
                   <SelectItem key={code} value={code}>
-                    {code} - {course.title}
+                    {code} - {course.course_name}
                   </SelectItem>
                 ))}
-              </SelectContent>
-            </Select>
-          </div>
-
-          {/* Section Type */}
-          <div className="space-y-1">
-            <label className="text-xs text-muted-foreground">Type</label>
-            <Select 
-              value={selectedSectionType} 
-              onValueChange={(v: 'L' | 'T' | 'P') => {
-                setSelectedSectionType(v);
-                setSelectedSectionName('');
-              }}
-              disabled={!selectedCourseCode}
-            >
-              <SelectTrigger className="bg-secondary/50 border-border/50">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent className="bg-popover">
-                <SelectItem value="L" disabled={!availableSectionTypes.L}>
-                  Lecture (L) {!availableSectionTypes.L && '- N/A'}
-                </SelectItem>
-                <SelectItem value="T" disabled={!availableSectionTypes.T}>
-                  Tutorial (T) {!availableSectionTypes.T && '- N/A'}
-                </SelectItem>
-                <SelectItem value="P" disabled={!availableSectionTypes.P}>
-                  Practical (P) {!availableSectionTypes.P && '- N/A'}
-                </SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -220,12 +172,17 @@ export function Timetable() {
               disabled={!selectedCourseCode || availableSections.length === 0}
             >
               <SelectTrigger className="bg-secondary/50 border-border/50">
-                <SelectValue placeholder={availableSections.length === 0 ? "No sections" : "Select"} />
+                <SelectValue placeholder={availableSections.length === 0 ? "No sections" : "Select section"} />
               </SelectTrigger>
-              <SelectContent className="bg-popover">
+              <SelectContent className="bg-popover max-h-[300px]">
                 {availableSections.map((s) => (
-                  <SelectItem key={s.section} value={s.section}>
-                    {s.section} ({s.room})
+                  <SelectItem key={s.name} value={s.name}>
+                    <span className={`inline-block w-8 ${
+                      s.type === 'L' ? 'text-primary' :
+                      s.type === 'T' ? 'text-warning' :
+                      'text-grade-b'
+                    }`}>{s.name}</span>
+                    <span className="text-muted-foreground ml-2">• {s.room}</span>
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -248,16 +205,27 @@ export function Timetable() {
 
         {/* Info about selected course sections */}
         {selectedCourse && (
-          <div className="mt-4 p-3 rounded-lg bg-secondary/30 flex items-start gap-2">
-            <Info className="w-4 h-4 text-muted-foreground mt-0.5" />
-            <div className="text-sm text-muted-foreground">
-              <span className="font-medium text-foreground">{selectedCourseCode}</span>: 
-              {availableSectionTypes.L && <span className="text-primary ml-2">L✓</span>}
-              {availableSectionTypes.T && <span className="text-warning ml-2">T✓</span>}
-              {availableSectionTypes.P && <span className="text-grade-b ml-2">P✓</span>}
-              {!availableSectionTypes.L && !availableSectionTypes.T && !availableSectionTypes.P && 
-                <span className="text-destructive ml-2">No sections available</span>
-              }
+          <div className="mt-4 p-3 rounded-lg bg-secondary/30">
+            <div className="flex items-start gap-2">
+              <Info className="w-4 h-4 text-muted-foreground mt-0.5 shrink-0" />
+              <div className="text-sm">
+                <span className="font-medium text-foreground">{selectedCourseCode}</span>
+                <span className="text-muted-foreground"> - {selectedCourse.course_name} ({selectedCourse.units} credits)</span>
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {availableSections.map((s) => (
+                    <span
+                      key={s.name}
+                      className={`px-2 py-0.5 rounded-full text-xs ${
+                        s.type === 'L' ? 'bg-primary/20 text-primary' :
+                        s.type === 'T' ? 'bg-warning/20 text-warning' :
+                        'bg-grade-b/20 text-grade-b'
+                      }`}
+                    >
+                      {s.name}
+                    </span>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         )}
@@ -351,11 +319,11 @@ export function Timetable() {
               const first = courseSections[0];
               
               // Get unique section identifiers
-              const uniqueSections = new Map<string, { type: string; section: string }>();
+              const uniqueSections = new Map<string, { type: string; section: string; instructor: string[] }>();
               courseSections.forEach((s) => {
                 const key = `${s.sectionType}:${s.section}`;
                 if (!uniqueSections.has(key)) {
-                  uniqueSections.set(key, { type: s.sectionType, section: s.section });
+                  uniqueSections.set(key, { type: s.sectionType, section: s.section, instructor: s.instructor });
                 }
               });
 
@@ -368,17 +336,22 @@ export function Timetable() {
                     <p className="font-medium">{courseCode}</p>
                     <p className="text-sm text-muted-foreground">{first.courseTitle}</p>
                     <div className="flex flex-wrap gap-2 mt-2">
-                      {Array.from(uniqueSections.values()).map(({ type, section }) => (
-                        <span
-                          key={`${type}-${section}`}
-                          className={`px-2 py-0.5 rounded-full text-xs ${
-                            type === 'L' ? 'bg-primary/20 text-primary' :
-                            type === 'T' ? 'bg-warning/20 text-warning' :
-                            'bg-grade-b/20 text-grade-b'
-                          }`}
-                        >
-                          {section}
-                        </span>
+                      {Array.from(uniqueSections.values()).map(({ type, section, instructor }) => (
+                        <div key={`${type}-${section}`} className="flex items-center gap-1">
+                          <span
+                            className={`px-2 py-0.5 rounded-full text-xs ${
+                              type === 'L' ? 'bg-primary/20 text-primary' :
+                              type === 'T' ? 'bg-warning/20 text-warning' :
+                              'bg-grade-b/20 text-grade-b'
+                            }`}
+                          >
+                            {section}
+                          </span>
+                          <span className="text-xs text-muted-foreground flex items-center gap-1">
+                            <User className="w-3 h-3" />
+                            {instructor[0]}
+                          </span>
+                        </div>
                       ))}
                     </div>
                   </div>
