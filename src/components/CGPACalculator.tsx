@@ -8,9 +8,24 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ChronoData, SemesterRecord, GRADES } from '@/types';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { Plus, Trash2, Calculator, BookOpen, TrendingUp, Search, ChevronDown, ChevronUp } from 'lucide-react';
-import rawCourseData from '@/data/chronoscript-raw.json';
+import cgpaCourseData from '@/data/courses-cgpa.json';
 
-const courseData = rawCourseData as ChronoData;
+// CGPA-specific course data structure
+interface CGPACourse {
+  title: string;
+  credits: number;
+  L: number;
+  P: number;
+  sections: unknown;
+}
+
+interface CGPAData {
+  semester: string;
+  slotMap: Record<string, string>;
+  courses: Record<string, CGPACourse>;
+}
+
+const courseData = cgpaCourseData as CGPAData;
 
 const SEMESTER_OPTIONS = [
   '1-1', '1-2', '2-1', '2-2', '3-1', '3-2', '4-1', '4-2', '5-1', '5-2'
@@ -41,7 +56,7 @@ export function CGPACalculator() {
     const course = courseData.courses[selectedCourseCode];
     if (!course) return false;
     const currentCreds = currentSemesterRecord?.courses.reduce((sum, c) => sum + c.credits, 0) || 0;
-    return currentCreds + course.units > MAX_CREDITS_PER_SEM;
+    return currentCreds + course.credits > MAX_CREDITS_PER_SEM;
   }, [selectedCourseCode, activeSemester, currentSemesterRecord]);
 
   const addCourse = () => {
@@ -52,12 +67,12 @@ export function CGPACalculator() {
 
     // Check credit limit
     const currentCreds = currentSemesterRecord?.courses.reduce((sum, c) => sum + c.credits, 0) || 0;
-    if (currentCreds + course.units > MAX_CREDITS_PER_SEM) return;
+    if (currentCreds + course.credits > MAX_CREDITS_PER_SEM) return;
 
     const newCourse = {
       courseCode: selectedCourseCode,
-      courseTitle: course.course_name,
-      credits: course.units,
+      courseTitle: course.title,
+      credits: course.credits,
       grade: selectedGrade,
     };
 
@@ -126,7 +141,7 @@ export function CGPACalculator() {
       .filter(([code, course]) => {
         if (!searchQuery) return true;
         const query = searchQuery.toLowerCase();
-        return code.toLowerCase().includes(query) || course.course_name.toLowerCase().includes(query);
+        return code.toLowerCase().includes(query) || course.title.toLowerCase().includes(query);
       })
       .slice(0, 100);
   }, [currentSemesterRecord, searchQuery]);
@@ -238,7 +253,7 @@ export function CGPACalculator() {
                     <SelectContent className="max-h-[300px] bg-popover">
                       {availableCourses.map(([code, course]) => (
                         <SelectItem key={code} value={code}>
-                          {code} - {course.course_name} ({course.units} cr)
+                          {code} - {course.title} ({course.credits} cr)
                         </SelectItem>
                       ))}
                     </SelectContent>
