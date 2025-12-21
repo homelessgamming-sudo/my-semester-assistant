@@ -1,12 +1,31 @@
 import { useMemo } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { TimetableEntry, AttendanceRecord, DAY_NAMES } from '@/types';
+import { DAY_NAMES, SLOT_MAP } from '@/types';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { Check, X, Ban, RotateCcw, Calendar, Clock, MapPin } from 'lucide-react';
 
+interface SelectedSection {
+  courseCode: string;
+  courseTitle: string;
+  sectionType: 'L' | 'T' | 'P';
+  section: string;
+  room: string;
+  days: string[];
+  slots: number[];
+  timeRanges: string[];
+}
+
+interface AttendanceRecord {
+  date: string;
+  courseCode: string;
+  section: string;
+  slot: number;
+  status: 'present' | 'absent' | 'cancelled' | null;
+}
+
 export function AttendanceTracker() {
-  const [timetableData] = useLocalStorage<TimetableEntry[]>('timetableData', []);
+  const [selectedSections] = useLocalStorage<SelectedSection[]>('selectedSections', []);
   const [attendanceRecords, setAttendanceRecords] = useLocalStorage<AttendanceRecord[]>('attendanceRecords', []);
 
   const today = new Date();
@@ -24,32 +43,40 @@ export function AttendanceTracker() {
   const todayString = today.toISOString().split('T')[0];
 
   const todaysClasses = useMemo(() => {
-    return timetableData
-      .filter((entry) => entry.days.includes(todayCode))
-      .sort((a, b) => a.slots[0] - b.slots[0]);
-  }, [timetableData, todayCode]);
+    const classes: { entry: SelectedSection; slot: number }[] = [];
+    
+    selectedSections.forEach((entry) => {
+      if (entry.days.includes(todayCode)) {
+        entry.slots.forEach((slot) => {
+          if (slot <= 11) {
+            classes.push({ entry, slot });
+          }
+        });
+      }
+    });
 
-  const getAttendanceStatus = (entry: TimetableEntry, slot: number): AttendanceRecord['status'] => {
+    return classes.sort((a, b) => a.slot - b.slot);
+  }, [selectedSections, todayCode]);
+
+  const getAttendanceStatus = (courseCode: string, section: string, slot: number): AttendanceRecord['status'] => {
     const record = attendanceRecords.find(
       (r) =>
         r.date === todayString &&
-        r.courseCode === entry.courseCode &&
-        r.section === entry.section &&
-        r.timeRange === entry.timeRanges[entry.slots.indexOf(slot)]
+        r.courseCode === courseCode &&
+        r.section === section &&
+        r.slot === slot
     );
     return record?.status || null;
   };
 
-  const setAttendance = (entry: TimetableEntry, slot: number, status: AttendanceRecord['status']) => {
-    const timeRange = entry.timeRanges[entry.slots.indexOf(slot)];
-    
+  const setAttendance = (courseCode: string, section: string, slot: number, status: AttendanceRecord['status']) => {
     setAttendanceRecords((prev) => {
       const filtered = prev.filter(
         (r) =>
           !(r.date === todayString &&
-            r.courseCode === entry.courseCode &&
-            r.section === entry.section &&
-            r.timeRange === timeRange)
+            r.courseCode === courseCode &&
+            r.section === section &&
+            r.slot === slot)
       );
       
       if (status === null) {
@@ -60,10 +87,10 @@ export function AttendanceTracker() {
         ...filtered,
         {
           date: todayString,
-          courseCode: entry.courseCode,
-          section: entry.section,
+          courseCode,
+          section,
+          slot,
           status,
-          timeRange,
         },
       ];
     });
@@ -81,7 +108,7 @@ export function AttendanceTracker() {
     const present = attendanceRecords.filter((r) => r.status === 'present').length;
     const absent = attendanceRecords.filter((r) => r.status === 'absent').length;
     const cancelled = attendanceRecords.filter((r) => r.status === 'cancelled').length;
-    const percentage = totalRecords > 0 ? ((present / (present + absent)) * 100) : 0;
+    const percentage = (present + absent) > 0 ? ((present / (present + absent)) * 100) : 0;
     
     return { present, absent, cancelled, percentage };
   }, [attendanceRecords]);
@@ -124,78 +151,80 @@ export function AttendanceTracker() {
           <div className="text-center py-12 text-muted-foreground">
             <Calendar className="w-12 h-12 mx-auto mb-4 opacity-50" />
             <p>No classes scheduled for today</p>
-            <p className="text-sm">Upload your timetable to see classes</p>
+            <p className="text-sm">Add courses in the Timetable tab to see classes</p>
           </div>
         ) : (
           <div className="space-y-4">
-            {todaysClasses.map((entry, index) =>
-              entry.slots.map((slot, slotIndex) => {
-                const status = getAttendanceStatus(entry, slot);
-                const timeRange = entry.timeRanges[slotIndex];
+            {todaysClasses.map(({ entry, slot }, index) => {
+              const status = getAttendanceStatus(entry.courseCode, entry.section, slot);
 
-                return (
-                  <div
-                    key={`${entry.courseCode}-${slot}-${index}`}
-                    className={`p-4 rounded-xl border transition-all duration-200 ${getStatusColor(status)}`}
-                  >
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                      <div className="flex-1">
-                        <p className="font-semibold text-lg">{entry.courseCode}</p>
-                        <div className="flex flex-wrap items-center gap-4 mt-2 text-sm opacity-80">
-                          <span className="flex items-center gap-1">
-                            <Clock className="w-4 h-4" />
-                            {timeRange}
-                          </span>
-                          <span className="flex items-center gap-1">
-                            <MapPin className="w-4 h-4" />
-                            {entry.room}
-                          </span>
-                          <span className="px-2 py-0.5 rounded-full bg-background/30 text-xs">
-                            {entry.section}
-                          </span>
-                        </div>
-                      </div>
-
-                      <div className="flex items-center gap-2">
-                        <Button
-                          size="sm"
-                          variant={status === 'present' ? 'default' : 'outline'}
-                          onClick={() => setAttendance(entry, slot, 'present')}
-                          className={status === 'present' ? 'bg-success hover:bg-success/90' : ''}
-                        >
-                          <Check className="w-4 h-4" />
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant={status === 'absent' ? 'default' : 'outline'}
-                          onClick={() => setAttendance(entry, slot, 'absent')}
-                          className={status === 'absent' ? 'bg-destructive hover:bg-destructive/90' : ''}
-                        >
-                          <X className="w-4 h-4" />
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant={status === 'cancelled' ? 'default' : 'outline'}
-                          onClick={() => setAttendance(entry, slot, 'cancelled')}
-                          className={status === 'cancelled' ? 'bg-warning hover:bg-warning/90' : ''}
-                        >
-                          <Ban className="w-4 h-4" />
-                        </Button>
-                        {status && (
-                          <Button
-                            size="sm"
-                            variant="ghost"
-                            onClick={() => setAttendance(entry, slot, null)}
-                          >
-                            <RotateCcw className="w-4 h-4" />
-                          </Button>
-                        )}
+              return (
+                <div
+                  key={`${entry.courseCode}-${entry.section}-${slot}-${index}`}
+                  className={`p-4 rounded-xl border transition-all duration-200 ${getStatusColor(status)}`}
+                >
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div className="flex-1">
+                      <p className="font-semibold text-lg">{entry.courseCode}</p>
+                      <p className="text-sm opacity-80">{entry.courseTitle}</p>
+                      <div className="flex flex-wrap items-center gap-4 mt-2 text-sm opacity-80">
+                        <span className="flex items-center gap-1">
+                          <Clock className="w-4 h-4" />
+                          {SLOT_MAP[slot]}
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <MapPin className="w-4 h-4" />
+                          {entry.room}
+                        </span>
+                        <span className={`px-2 py-0.5 rounded-full text-xs ${
+                          entry.sectionType === 'L' ? 'bg-primary/30' :
+                          entry.sectionType === 'T' ? 'bg-warning/30' :
+                          'bg-grade-b/30'
+                        }`}>
+                          {entry.section}
+                        </span>
                       </div>
                     </div>
+
+                    <div className="flex items-center gap-2">
+                      <Button
+                        size="sm"
+                        variant={status === 'present' ? 'default' : 'outline'}
+                        onClick={() => setAttendance(entry.courseCode, entry.section, slot, 'present')}
+                        className={status === 'present' ? 'bg-success hover:bg-success/90' : ''}
+                      >
+                        <Check className="w-4 h-4" />
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant={status === 'absent' ? 'default' : 'outline'}
+                        onClick={() => setAttendance(entry.courseCode, entry.section, slot, 'absent')}
+                        className={status === 'absent' ? 'bg-destructive hover:bg-destructive/90' : ''}
+                      >
+                        <X className="w-4 h-4" />
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant={status === 'cancelled' ? 'default' : 'outline'}
+                        onClick={() => setAttendance(entry.courseCode, entry.section, slot, 'cancelled')}
+                        className={status === 'cancelled' ? 'bg-warning hover:bg-warning/90' : ''}
+                      >
+                        <Ban className="w-4 h-4" />
+                      </Button>
+                      {status && (
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => setAttendance(entry.courseCode, entry.section, slot, null)}
+                        >
+                          <RotateCcw className="w-4 h-4" />
+                        </Button>
+                      )}
+                    </div>
                   </div>
-                );
-              })
-            )}
+                </div>
+              );
+            })}
           </div>
         )}
       </Card>
