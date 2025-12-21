@@ -5,7 +5,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Input } from '@/components/ui/input';
 import { ChronoData, SelectedSection, SLOT_MAP, DAYS, DAY_NAMES } from '@/types';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
-import { Clock, Calendar, Plus, Trash2, Search, Info, User, AlertTriangle } from 'lucide-react';
+import { Clock, Calendar, Plus, Trash2, Search, Info, User, AlertTriangle, GraduationCap } from 'lucide-react';
 import rawCourseData from '@/data/chronoscript-raw.json';
 
 const courseData = rawCourseData as ChronoData;
@@ -17,6 +17,43 @@ interface ClashInfo {
   slot: number;
 }
 
+interface ExamClashInfo {
+  course1: string;
+  course2: string;
+  examType: 'midsem' | 'compre';
+  dateTime: string;
+}
+
+// Parse ISO exam date to get the start time
+const parseExamTime = (isoString: string): { start: Date; end: Date } | null => {
+  if (!isoString) return null;
+  const [startStr, endStr] = isoString.split('|');
+  if (!startStr || !endStr) return null;
+  return { start: new Date(startStr), end: new Date(endStr) };
+};
+
+// Check if two exam times overlap
+const examsOverlap = (exam1: string, exam2: string): boolean => {
+  const time1 = parseExamTime(exam1);
+  const time2 = parseExamTime(exam2);
+  if (!time1 || !time2) return false;
+  
+  // Exams overlap if one starts before the other ends
+  return time1.start < time2.end && time2.start < time1.end;
+};
+
+// Format exam time for display
+const formatExamTime = (isoString: string): string => {
+  const time = parseExamTime(isoString);
+  if (!time) return 'TBA';
+  return time.start.toLocaleDateString('en-IN', { 
+    day: '2-digit', 
+    month: 'short',
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+};
+
 export function Timetable() {
   const [selectedSections, setSelectedSections] = useLocalStorage<SelectedSection[]>('selectedSections', []);
   const [selectedCourseCode, setSelectedCourseCode] = useState('');
@@ -25,7 +62,13 @@ export function Timetable() {
 
   const selectedCourse = selectedCourseCode ? courseData.courses[selectedCourseCode] : null;
 
-  // Detect clashes
+  // Get unique course codes from selected sections
+  const selectedCourseCodes = useMemo(() => 
+    Array.from(new Set(selectedSections.map(s => s.courseCode))),
+    [selectedSections]
+  );
+
+  // Detect schedule clashes
   const clashes = useMemo(() => {
     const clashList: ClashInfo[] = [];
     
@@ -51,6 +94,47 @@ export function Timetable() {
     
     return clashList;
   }, [selectedSections]);
+
+  // Detect exam clashes
+  const examClashes = useMemo(() => {
+    const clashList: ExamClashInfo[] = [];
+    
+    for (let i = 0; i < selectedCourseCodes.length; i++) {
+      for (let j = i + 1; j < selectedCourseCodes.length; j++) {
+        const code1 = selectedCourseCodes[i];
+        const code2 = selectedCourseCodes[j];
+        const course1 = courseData.courses[code1];
+        const course2 = courseData.courses[code2];
+        
+        const exam1 = course1?.exams_iso?.[0];
+        const exam2 = course2?.exams_iso?.[0];
+        
+        if (!exam1 || !exam2) continue;
+        
+        // Check midsem clash
+        if (exam1.midsem && exam2.midsem && examsOverlap(exam1.midsem, exam2.midsem)) {
+          clashList.push({
+            course1: code1,
+            course2: code2,
+            examType: 'midsem',
+            dateTime: formatExamTime(exam1.midsem)
+          });
+        }
+        
+        // Check compre clash
+        if (exam1.compre && exam2.compre && examsOverlap(exam1.compre, exam2.compre)) {
+          clashList.push({
+            course1: code1,
+            course2: code2,
+            examType: 'compre',
+            dateTime: formatExamTime(exam1.compre)
+          });
+        }
+      }
+    }
+    
+    return clashList;
+  }, [selectedCourseCodes]);
 
   // Get section types (L, T, P) and their available sections
   const availableSections = useMemo(() => {
@@ -178,7 +262,7 @@ export function Timetable() {
 
   return (
     <div className="space-y-6">
-      {/* Clash Warning */}
+      {/* Schedule Clash Warning */}
       {clashes.length > 0 && (
         <Card className="glass-card p-4 border-destructive/50 bg-destructive/10">
           <div className="flex items-start gap-3">
@@ -197,6 +281,29 @@ export function Timetable() {
                 {clashes.length > 5 && (
                   <p className="text-sm text-destructive/60">...and {clashes.length - 5} more clashes</p>
                 )}
+              </div>
+            </div>
+          </div>
+        </Card>
+      )}
+
+      {/* Exam Clash Warning */}
+      {examClashes.length > 0 && (
+        <Card className="glass-card p-4 border-warning/50 bg-warning/10">
+          <div className="flex items-start gap-3">
+            <GraduationCap className="w-5 h-5 text-warning shrink-0 mt-0.5" />
+            <div>
+              <h3 className="font-semibold text-warning">Exam Clashes Detected!</h3>
+              <div className="mt-2 space-y-1">
+                {examClashes.map((clash, i) => (
+                  <p key={i} className="text-sm text-warning/80">
+                    <span className="font-medium">{clash.course1}</span>
+                    {' '}and{' '}
+                    <span className="font-medium">{clash.course2}</span>
+                    {' '}have overlapping <span className="font-medium uppercase">{clash.examType}</span> exams
+                    {' '}({clash.dateTime})
+                  </p>
+                ))}
               </div>
             </div>
           </div>

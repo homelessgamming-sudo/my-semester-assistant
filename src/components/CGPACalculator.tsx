@@ -4,71 +4,117 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { ChronoData, SelectedCourse, GRADES } from '@/types';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { ChronoData, SemesterRecord, GRADES } from '@/types';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
-import { Plus, Trash2, Calculator, BookOpen, TrendingUp, Search } from 'lucide-react';
+import { Plus, Trash2, Calculator, BookOpen, TrendingUp, Search, ChevronDown, ChevronUp } from 'lucide-react';
 import rawCourseData from '@/data/chronoscript-raw.json';
 
 const courseData = rawCourseData as ChronoData;
 
+const SEMESTER_OPTIONS = [
+  '1-1', '1-2', '2-1', '2-2', '3-1', '3-2', '4-1', '4-2', '5-1', '5-2'
+];
+
 export function CGPACalculator() {
-  const [selectedCourses, setSelectedCourses] = useLocalStorage<SelectedCourse[]>('selectedCourses', []);
+  const [semesterRecords, setSemesterRecords] = useLocalStorage<SemesterRecord[]>('semesterRecords', []);
+  const [activeSemester, setActiveSemester] = useState('');
   const [selectedCourseCode, setSelectedCourseCode] = useState('');
   const [selectedGrade, setSelectedGrade] = useState('');
-  const [previousCredits, setPreviousCredits] = useState(0);
-  const [previousGradePoints, setPreviousGradePoints] = useState(0);
   const [searchQuery, setSearchQuery] = useState('');
+  const [expandedSemesters, setExpandedSemesters] = useState<string[]>([]);
+
+  // Get or create semester record
+  const getOrCreateSemester = (semester: string) => {
+    const existing = semesterRecords.find(r => r.semester === semester);
+    if (existing) return existing;
+    return { semester, courses: [] };
+  };
+
+  const currentSemesterRecord = activeSemester ? getOrCreateSemester(activeSemester) : null;
 
   const addCourse = () => {
-    if (!selectedCourseCode || !selectedGrade) return;
+    if (!selectedCourseCode || !selectedGrade || !activeSemester) return;
 
     const course = courseData.courses[selectedCourseCode];
     if (!course) return;
 
-    const newCourse: SelectedCourse = {
+    const newCourse = {
       courseCode: selectedCourseCode,
       courseTitle: course.course_name,
       credits: course.units,
       grade: selectedGrade,
     };
 
-    const updated = [...selectedCourses, newCourse];
-    setSelectedCourses(updated);
+    const existingIndex = semesterRecords.findIndex(r => r.semester === activeSemester);
+    if (existingIndex >= 0) {
+      const updated = [...semesterRecords];
+      updated[existingIndex] = {
+        ...updated[existingIndex],
+        courses: [...updated[existingIndex].courses, newCourse]
+      };
+      setSemesterRecords(updated);
+    } else {
+      setSemesterRecords([...semesterRecords, { semester: activeSemester, courses: [newCourse] }]);
+    }
+    
     setSelectedCourseCode('');
     setSelectedGrade('');
   };
 
-  const removeCourse = (courseCode: string) => {
-    const updated = selectedCourses.filter((c) => c.courseCode !== courseCode);
-    setSelectedCourses(updated);
+  const removeCourse = (semester: string, courseCode: string) => {
+    const updated = semesterRecords.map(record => {
+      if (record.semester === semester) {
+        return {
+          ...record,
+          courses: record.courses.filter(c => c.courseCode !== courseCode)
+        };
+      }
+      return record;
+    }).filter(r => r.courses.length > 0);
+    setSemesterRecords(updated);
   };
 
-  const { sgpa, cgpa } = useMemo(() => {
-    const semesterCredits = selectedCourses.reduce((sum, c) => sum + c.credits, 0);
-    const semesterGradePoints = selectedCourses.reduce(
-      (sum, c) => sum + c.credits * (GRADES[c.grade] || 0),
-      0
+  const toggleSemesterExpand = (semester: string) => {
+    setExpandedSemesters(prev => 
+      prev.includes(semester) 
+        ? prev.filter(s => s !== semester)
+        : [...prev, semester]
     );
+  };
 
-    const sgpa = semesterCredits > 0 ? semesterGradePoints / semesterCredits : 0;
+  // Calculate SGPA for a specific semester
+  const calculateSGPA = (courses: { credits: number; grade: string }[]) => {
+    const totalCredits = courses.reduce((sum, c) => sum + c.credits, 0);
+    const totalGradePoints = courses.reduce((sum, c) => sum + c.credits * (GRADES[c.grade] || 0), 0);
+    return totalCredits > 0 ? totalGradePoints / totalCredits : 0;
+  };
 
-    const totalCredits = semesterCredits + previousCredits;
-    const totalGradePoints = semesterGradePoints + previousGradePoints;
+  // Calculate overall CGPA
+  const { cgpa, totalCredits, currentSGPA, currentCredits } = useMemo(() => {
+    const allCourses = semesterRecords.flatMap(r => r.courses);
+    const totalCredits = allCourses.reduce((sum, c) => sum + c.credits, 0);
+    const totalGradePoints = allCourses.reduce((sum, c) => sum + c.credits * (GRADES[c.grade] || 0), 0);
     const cgpa = totalCredits > 0 ? totalGradePoints / totalCredits : 0;
 
-    return { sgpa, cgpa };
-  }, [selectedCourses, previousCredits, previousGradePoints]);
+    const currentSemCourses = currentSemesterRecord?.courses || [];
+    const currentCredits = currentSemCourses.reduce((sum, c) => sum + c.credits, 0);
+    const currentSGPA = calculateSGPA(currentSemCourses);
+
+    return { cgpa, totalCredits, currentSGPA, currentCredits };
+  }, [semesterRecords, currentSemesterRecord]);
 
   const availableCourses = useMemo(() => {
+    const currentCourses = currentSemesterRecord?.courses || [];
     return Object.entries(courseData.courses)
-      .filter(([code]) => !selectedCourses.find((c) => c.courseCode === code))
+      .filter(([code]) => !currentCourses.find((c) => c.courseCode === code))
       .filter(([code, course]) => {
         if (!searchQuery) return true;
         const query = searchQuery.toLowerCase();
         return code.toLowerCase().includes(query) || course.course_name.toLowerCase().includes(query);
       })
       .slice(0, 100);
-  }, [selectedCourses, searchQuery]);
+  }, [currentSemesterRecord, searchQuery]);
 
   const getGradeColor = (grade: string) => {
     if (grade === 'A' || grade === 'A-') return 'text-grade-a';
@@ -77,6 +123,15 @@ export function CGPACalculator() {
     if (grade === 'D') return 'text-grade-d';
     return 'text-grade-e';
   };
+
+  // Get sorted semester records
+  const sortedRecords = useMemo(() => {
+    return [...semesterRecords].sort((a, b) => {
+      const indexA = SEMESTER_OPTIONS.indexOf(a.semester);
+      const indexB = SEMESTER_OPTIONS.indexOf(b.semester);
+      return indexA - indexB;
+    });
+  }, [semesterRecords]);
 
   return (
     <div className="space-y-6">
@@ -88,8 +143,9 @@ export function CGPACalculator() {
               <Calculator className="w-6 h-6 text-primary" />
             </div>
             <div>
-              <p className="text-sm text-muted-foreground">SGPA</p>
-              <p className="text-3xl font-bold gradient-text">{sgpa.toFixed(2)}</p>
+              <p className="text-sm text-muted-foreground">Current SGPA</p>
+              <p className="text-3xl font-bold gradient-text">{currentSGPA.toFixed(2)}</p>
+              <p className="text-xs text-muted-foreground">{activeSemester || 'Select semester'}</p>
             </div>
           </div>
         </Card>
@@ -100,8 +156,9 @@ export function CGPACalculator() {
               <TrendingUp className="w-6 h-6 text-primary" />
             </div>
             <div>
-              <p className="text-sm text-muted-foreground">CGPA</p>
+              <p className="text-sm text-muted-foreground">Overall CGPA</p>
               <p className="text-3xl font-bold gradient-text">{cgpa.toFixed(2)}</p>
+              <p className="text-xs text-muted-foreground">{totalCredits} total credits</p>
             </div>
           </div>
         </Card>
@@ -112,8 +169,9 @@ export function CGPACalculator() {
               <BookOpen className="w-6 h-6 text-primary" />
             </div>
             <div>
-              <p className="text-sm text-muted-foreground">Credits</p>
-              <p className="text-3xl font-bold">{selectedCourses.reduce((sum, c) => sum + c.credits, 0)}</p>
+              <p className="text-sm text-muted-foreground">Current Credits</p>
+              <p className="text-3xl font-bold">{currentCredits}</p>
+              <p className="text-xs text-muted-foreground">{currentSemesterRecord?.courses.length || 0} courses</p>
             </div>
           </div>
         </Card>
@@ -123,122 +181,148 @@ export function CGPACalculator() {
       <Card className="glass-card p-4">
         <p className="text-sm text-muted-foreground">
           📚 Data source: <span className="text-primary font-medium">BITS Hyderabad - {courseData.metadata.acadYear}-{courseData.metadata.acadYear + 1} Semester {courseData.metadata.semester}</span>
-          {' '}• {Object.keys(courseData.courses).length} courses loaded from chronoscript
+          {' '}• {Object.keys(courseData.courses).length} courses loaded
         </p>
       </Card>
 
-      {/* Previous Semester (for CGPA) */}
+      {/* Semester Selection & Add Course */}
       <Card className="glass-card p-6">
-        <h3 className="font-semibold mb-4">Previous Semesters (Optional)</h3>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className="space-y-2">
-            <Label>Total Credits Earned</Label>
-            <Input
-              type="number"
-              value={previousCredits || ''}
-              onChange={(e) => setPreviousCredits(Number(e.target.value))}
-              placeholder="0"
-              className="bg-secondary/50 border-border/50"
-            />
-          </div>
-          <div className="space-y-2">
-            <Label>Total Grade Points</Label>
-            <Input
-              type="number"
-              value={previousGradePoints || ''}
-              onChange={(e) => setPreviousGradePoints(Number(e.target.value))}
-              placeholder="0"
-              className="bg-secondary/50 border-border/50"
-            />
-          </div>
-        </div>
-      </Card>
-
-      {/* Add Course */}
-      <Card className="glass-card p-6">
-        <h3 className="font-semibold mb-4">Add Course</h3>
+        <h3 className="font-semibold mb-4">Add Course to Semester</h3>
         
-        {/* Search */}
-        <div className="relative mb-4">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-          <Input
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search courses by code or name..."
-            className="pl-10 bg-secondary/50 border-border/50"
-          />
-        </div>
-
-        <div className="flex flex-col sm:flex-row gap-4">
-          <div className="flex-1">
-            <Select value={selectedCourseCode} onValueChange={setSelectedCourseCode}>
+        <div className="space-y-4">
+          {/* Semester Selection */}
+          <div className="space-y-2">
+            <Label>Select Semester</Label>
+            <Select value={activeSemester} onValueChange={setActiveSemester}>
               <SelectTrigger className="bg-secondary/50 border-border/50">
-                <SelectValue placeholder="Select course" />
-              </SelectTrigger>
-              <SelectContent className="max-h-[300px] bg-popover">
-                {availableCourses.map(([code, course]) => (
-                  <SelectItem key={code} value={code}>
-                    {code} - {course.course_name} ({course.units} cr)
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-          <div className="w-full sm:w-32">
-            <Select value={selectedGrade} onValueChange={setSelectedGrade}>
-              <SelectTrigger className="bg-secondary/50 border-border/50">
-                <SelectValue placeholder="Grade" />
+                <SelectValue placeholder="Choose semester" />
               </SelectTrigger>
               <SelectContent className="bg-popover">
-                {Object.entries(GRADES).map(([grade, points]) => (
-                  <SelectItem key={grade} value={grade}>
-                    {grade} ({points})
+                {SEMESTER_OPTIONS.map((sem) => (
+                  <SelectItem key={sem} value={sem}>
+                    Semester {sem}
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
           </div>
-          <Button
-            onClick={addCourse}
-            disabled={!selectedCourseCode || !selectedGrade}
-            className="bg-primary hover:bg-primary/90"
-          >
-            <Plus className="w-4 h-4 mr-2" />
-            Add
-          </Button>
+
+          {activeSemester && (
+            <>
+              {/* Search */}
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <Input
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search courses by code or name..."
+                  className="pl-10 bg-secondary/50 border-border/50"
+                />
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-4">
+                <div className="flex-1">
+                  <Select value={selectedCourseCode} onValueChange={setSelectedCourseCode}>
+                    <SelectTrigger className="bg-secondary/50 border-border/50">
+                      <SelectValue placeholder="Select course" />
+                    </SelectTrigger>
+                    <SelectContent className="max-h-[300px] bg-popover">
+                      {availableCourses.map(([code, course]) => (
+                        <SelectItem key={code} value={code}>
+                          {code} - {course.course_name} ({course.units} cr)
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="w-full sm:w-32">
+                  <Select value={selectedGrade} onValueChange={setSelectedGrade}>
+                    <SelectTrigger className="bg-secondary/50 border-border/50">
+                      <SelectValue placeholder="Grade" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-popover">
+                      {Object.entries(GRADES).map(([grade, points]) => (
+                        <SelectItem key={grade} value={grade}>
+                          {grade} ({points})
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <Button
+                  onClick={addCourse}
+                  disabled={!selectedCourseCode || !selectedGrade}
+                  className="bg-primary hover:bg-primary/90"
+                >
+                  <Plus className="w-4 h-4 mr-2" />
+                  Add
+                </Button>
+              </div>
+            </>
+          )}
         </div>
       </Card>
 
-      {/* Selected Courses */}
-      {selectedCourses.length > 0 && (
+      {/* Semester Records */}
+      {sortedRecords.length > 0 && (
         <Card className="glass-card p-6">
-          <h3 className="font-semibold mb-4">Selected Courses ({selectedCourses.length})</h3>
-          <div className="space-y-3">
-            {selectedCourses.map((course) => (
-              <div
-                key={course.courseCode}
-                className="flex items-center justify-between p-4 rounded-xl bg-secondary/50 border border-border/30"
-              >
-                <div className="flex-1">
-                  <p className="font-medium">{course.courseCode}</p>
-                  <p className="text-sm text-muted-foreground">{course.courseTitle}</p>
-                </div>
-                <div className="flex items-center gap-4">
-                  <span className="text-sm text-muted-foreground">{course.credits} cr</span>
-                  <span className={`font-bold ${getGradeColor(course.grade)}`}>
-                    {course.grade}
-                  </span>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => removeCourse(course.courseCode)}
-                    className="text-destructive hover:text-destructive hover:bg-destructive/10"
+          <h3 className="font-semibold mb-4">Semester Records</h3>
+          <div className="space-y-4">
+            {sortedRecords.map((record) => {
+              const sgpa = calculateSGPA(record.courses);
+              const credits = record.courses.reduce((sum, c) => sum + c.credits, 0);
+              const isExpanded = expandedSemesters.includes(record.semester);
+
+              return (
+                <div key={record.semester} className="border border-border/30 rounded-xl overflow-hidden">
+                  <button
+                    onClick={() => toggleSemesterExpand(record.semester)}
+                    className="w-full flex items-center justify-between p-4 bg-secondary/30 hover:bg-secondary/50 transition-colors"
                   >
-                    <Trash2 className="w-4 h-4" />
-                  </Button>
+                    <div className="flex items-center gap-4">
+                      <span className="font-semibold">Semester {record.semester}</span>
+                      <span className="text-sm text-muted-foreground">
+                        {record.courses.length} courses • {credits} cr
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <span className="text-primary font-bold">SGPA: {sgpa.toFixed(2)}</span>
+                      {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                    </div>
+                  </button>
+                  
+                  {isExpanded && (
+                    <div className="p-4 space-y-2">
+                      {record.courses.map((course) => (
+                        <div
+                          key={course.courseCode}
+                          className="flex items-center justify-between p-3 rounded-lg bg-background/50"
+                        >
+                          <div className="flex-1">
+                            <p className="font-medium text-sm">{course.courseCode}</p>
+                            <p className="text-xs text-muted-foreground">{course.courseTitle}</p>
+                          </div>
+                          <div className="flex items-center gap-3">
+                            <span className="text-xs text-muted-foreground">{course.credits} cr</span>
+                            <span className={`font-bold text-sm ${getGradeColor(course.grade)}`}>
+                              {course.grade}
+                            </span>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              onClick={() => removeCourse(record.semester, course.courseCode)}
+                              className="h-7 w-7 text-destructive hover:text-destructive hover:bg-destructive/10"
+                            >
+                              <Trash2 className="w-3 h-3" />
+                            </Button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </Card>
       )}
