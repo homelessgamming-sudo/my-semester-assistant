@@ -310,13 +310,6 @@ export function Timetable() {
         </Card>
       )}
 
-      {/* Data Source Info */}
-      <Card className="glass-card p-4">
-        <p className="text-sm text-muted-foreground">
-          📚 Data source: <span className="text-primary font-medium">BITS Hyderabad - {courseData.metadata.acadYear}-{courseData.metadata.acadYear + 1} Semester {courseData.metadata.semester}</span>
-          {' '}• Use the Generator tab to auto-generate clash-free timetables
-        </p>
-      </Card>
 
       {/* Add Section */}
       <Card className="glass-card p-6">

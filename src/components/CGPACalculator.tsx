@@ -33,11 +33,26 @@ export function CGPACalculator() {
 
   const currentSemesterRecord = activeSemester ? getOrCreateSemester(activeSemester) : null;
 
+  const MAX_CREDITS_PER_SEM = 25;
+
+  // Check if adding course would exceed limit
+  const wouldExceedLimit = useMemo(() => {
+    if (!selectedCourseCode || !activeSemester) return false;
+    const course = courseData.courses[selectedCourseCode];
+    if (!course) return false;
+    const currentCreds = currentSemesterRecord?.courses.reduce((sum, c) => sum + c.credits, 0) || 0;
+    return currentCreds + course.units > MAX_CREDITS_PER_SEM;
+  }, [selectedCourseCode, activeSemester, currentSemesterRecord]);
+
   const addCourse = () => {
     if (!selectedCourseCode || !selectedGrade || !activeSemester) return;
 
     const course = courseData.courses[selectedCourseCode];
     if (!course) return;
+
+    // Check credit limit
+    const currentCreds = currentSemesterRecord?.courses.reduce((sum, c) => sum + c.credits, 0) || 0;
+    if (currentCreds + course.units > MAX_CREDITS_PER_SEM) return;
 
     const newCourse = {
       courseCode: selectedCourseCode,
@@ -170,20 +185,14 @@ export function CGPACalculator() {
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Current Credits</p>
-              <p className="text-3xl font-bold">{currentCredits}</p>
+              <p className={`text-3xl font-bold ${currentCredits > MAX_CREDITS_PER_SEM ? 'text-destructive' : ''}`}>
+                {currentCredits}/{MAX_CREDITS_PER_SEM}
+              </p>
               <p className="text-xs text-muted-foreground">{currentSemesterRecord?.courses.length || 0} courses</p>
             </div>
           </div>
         </Card>
       </div>
-
-      {/* Data Source Info */}
-      <Card className="glass-card p-4">
-        <p className="text-sm text-muted-foreground">
-          📚 Data source: <span className="text-primary font-medium">BITS Hyderabad - {courseData.metadata.acadYear}-{courseData.metadata.acadYear + 1} Semester {courseData.metadata.semester}</span>
-          {' '}• {Object.keys(courseData.courses).length} courses loaded
-        </p>
-      </Card>
 
       {/* Semester Selection & Add Course */}
       <Card className="glass-card p-6">
@@ -251,13 +260,19 @@ export function CGPACalculator() {
                 </div>
                 <Button
                   onClick={addCourse}
-                  disabled={!selectedCourseCode || !selectedGrade}
-                  className="bg-primary hover:bg-primary/90"
+                  disabled={!selectedCourseCode || !selectedGrade || wouldExceedLimit}
+                  className={wouldExceedLimit ? "bg-destructive hover:bg-destructive/90" : "bg-primary hover:bg-primary/90"}
                 >
                   <Plus className="w-4 h-4 mr-2" />
                   Add
                 </Button>
               </div>
+              
+              {wouldExceedLimit && (
+                <p className="text-sm text-destructive mt-2">
+                  Adding this course would exceed the {MAX_CREDITS_PER_SEM} credit limit for this semester.
+                </p>
+              )}
             </>
           )}
         </div>
