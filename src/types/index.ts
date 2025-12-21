@@ -12,6 +12,19 @@ export interface ChronoCourse {
   course_name: string;
   sections: Record<string, ChronoSection>;
   exams?: { midsem: string; compre: string }[];
+  exams_iso?: { midsem: string; compre: string }[];
+}
+
+export interface SemesterData {
+  courseCode: string;
+  courseTitle: string;
+  credits: number;
+  grade: string;
+}
+
+export interface SemesterRecord {
+  semester: string;
+  courses: SemesterData[];
 }
 
 export interface ChronoData {
