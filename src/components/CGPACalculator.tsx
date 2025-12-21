@@ -6,45 +6,31 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { CourseData, SelectedCourse, GRADES } from '@/types';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
-import { Plus, Trash2, Upload, Calculator, BookOpen, TrendingUp } from 'lucide-react';
+import { Plus, Trash2, Calculator, BookOpen, TrendingUp, Search } from 'lucide-react';
+import courseData from '@/data/courses.json';
 
 interface CGPACalculatorProps {
   onCoursesChange?: (courses: SelectedCourse[]) => void;
 }
 
 export function CGPACalculator({ onCoursesChange }: CGPACalculatorProps) {
-  const [courseData, setCourseData] = useLocalStorage<CourseData | null>('courseData', null);
+  const data = courseData as CourseData;
   const [selectedCourses, setSelectedCourses] = useLocalStorage<SelectedCourse[]>('selectedCourses', []);
   const [selectedCourseCode, setSelectedCourseCode] = useState('');
   const [selectedGrade, setSelectedGrade] = useState('');
   const [previousCredits, setPreviousCredits] = useState(0);
   const [previousGradePoints, setPreviousGradePoints] = useState(0);
-
-  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        try {
-          const data = JSON.parse(e.target?.result as string) as CourseData;
-          setCourseData(data);
-        } catch (error) {
-          console.error('Invalid JSON file');
-        }
-      };
-      reader.readAsText(file);
-    }
-  };
+  const [searchQuery, setSearchQuery] = useState('');
 
   const addCourse = () => {
-    if (!selectedCourseCode || !selectedGrade || !courseData) return;
+    if (!selectedCourseCode || !selectedGrade) return;
 
-    const course = courseData.courses[selectedCourseCode];
+    const course = data.courses[selectedCourseCode];
     if (!course) return;
 
     const newCourse: SelectedCourse = {
       courseCode: selectedCourseCode,
-      courseTitle: course.courseTitle,
+      courseTitle: course.title,
       credits: course.credits,
       grade: selectedGrade,
     };
@@ -62,7 +48,7 @@ export function CGPACalculator({ onCoursesChange }: CGPACalculatorProps) {
     onCoursesChange?.(updated);
   };
 
-  const { sgpa, cgpa, totalCredits, totalGradePoints } = useMemo(() => {
+  const { sgpa, cgpa } = useMemo(() => {
     const semesterCredits = selectedCourses.reduce((sum, c) => sum + c.credits, 0);
     const semesterGradePoints = selectedCourses.reduce(
       (sum, c) => sum + c.credits * (GRADES[c.grade] || 0),
@@ -75,15 +61,20 @@ export function CGPACalculator({ onCoursesChange }: CGPACalculatorProps) {
     const totalGradePoints = semesterGradePoints + previousGradePoints;
     const cgpa = totalCredits > 0 ? totalGradePoints / totalCredits : 0;
 
-    return { sgpa, cgpa, totalCredits, totalGradePoints };
+    return { sgpa, cgpa };
   }, [selectedCourses, previousCredits, previousGradePoints]);
 
   const availableCourses = useMemo(() => {
-    if (!courseData) return [];
-    return Object.entries(courseData.courses)
+    return Object.entries(data.courses)
       .filter(([code]) => !selectedCourses.find((c) => c.courseCode === code))
-      .map(([code, data]) => ({ code, ...data }));
-  }, [courseData, selectedCourses]);
+      .filter(([code, course]) => {
+        if (!searchQuery) return true;
+        const query = searchQuery.toLowerCase();
+        return code.toLowerCase().includes(query) || course.title.toLowerCase().includes(query);
+      })
+      .map(([code, course]) => ({ code, ...course }))
+      .slice(0, 50); // Limit for performance
+  }, [data.courses, selectedCourses, searchQuery]);
 
   const getGradeColor = (grade: string) => {
     if (grade === 'A' || grade === 'A-') return 'text-grade-a';
@@ -134,31 +125,6 @@ export function CGPACalculator({ onCoursesChange }: CGPACalculatorProps) {
         </Card>
       </div>
 
-      {/* Upload Section */}
-      <Card className="glass-card p-6">
-        <div className="flex items-center gap-4 mb-4">
-          <Upload className="w-5 h-5 text-primary" />
-          <h3 className="font-semibold">Course Data</h3>
-        </div>
-        <div className="flex flex-col sm:flex-row gap-4">
-          <div className="flex-1">
-            <Label htmlFor="course-upload" className="sr-only">Upload Course JSON</Label>
-            <Input
-              id="course-upload"
-              type="file"
-              accept=".json"
-              onChange={handleFileUpload}
-              className="bg-secondary/50 border-border/50 file:bg-primary file:text-primary-foreground file:border-0 file:rounded-md file:px-4 file:py-2 file:mr-4 file:cursor-pointer"
-            />
-          </div>
-          {courseData && (
-            <p className="text-sm text-muted-foreground self-center">
-              {courseData.totalCourses} courses loaded
-            </p>
-          )}
-        </div>
-      </Card>
-
       {/* Previous Semester (for CGPA) */}
       <Card className="glass-card p-6">
         <h3 className="font-semibold mb-4">Previous Semesters (Optional)</h3>
@@ -187,49 +153,59 @@ export function CGPACalculator({ onCoursesChange }: CGPACalculatorProps) {
       </Card>
 
       {/* Add Course */}
-      {courseData && (
-        <Card className="glass-card p-6">
-          <h3 className="font-semibold mb-4">Add Course</h3>
-          <div className="flex flex-col sm:flex-row gap-4">
-            <div className="flex-1">
-              <Select value={selectedCourseCode} onValueChange={setSelectedCourseCode}>
-                <SelectTrigger className="bg-secondary/50 border-border/50">
-                  <SelectValue placeholder="Select course" />
-                </SelectTrigger>
-                <SelectContent>
-                  {availableCourses.map((course) => (
-                    <SelectItem key={course.code} value={course.code}>
-                      {course.code} - {course.courseTitle} ({course.credits} cr)
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="w-full sm:w-32">
-              <Select value={selectedGrade} onValueChange={setSelectedGrade}>
-                <SelectTrigger className="bg-secondary/50 border-border/50">
-                  <SelectValue placeholder="Grade" />
-                </SelectTrigger>
-                <SelectContent>
-                  {Object.entries(GRADES).map(([grade, points]) => (
-                    <SelectItem key={grade} value={grade}>
-                      {grade} ({points})
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <Button
-              onClick={addCourse}
-              disabled={!selectedCourseCode || !selectedGrade}
-              className="bg-primary hover:bg-primary/90"
-            >
-              <Plus className="w-4 h-4 mr-2" />
-              Add
-            </Button>
+      <Card className="glass-card p-6">
+        <h3 className="font-semibold mb-4">Add Course</h3>
+        
+        {/* Search */}
+        <div className="relative mb-4">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+          <Input
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search courses..."
+            className="pl-10 bg-secondary/50 border-border/50"
+          />
+        </div>
+
+        <div className="flex flex-col sm:flex-row gap-4">
+          <div className="flex-1">
+            <Select value={selectedCourseCode} onValueChange={setSelectedCourseCode}>
+              <SelectTrigger className="bg-secondary/50 border-border/50">
+                <SelectValue placeholder="Select course" />
+              </SelectTrigger>
+              <SelectContent className="max-h-[300px]">
+                {availableCourses.map((course) => (
+                  <SelectItem key={course.code} value={course.code}>
+                    {course.code} - {course.title} ({course.credits} cr)
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
-        </Card>
-      )}
+          <div className="w-full sm:w-32">
+            <Select value={selectedGrade} onValueChange={setSelectedGrade}>
+              <SelectTrigger className="bg-secondary/50 border-border/50">
+                <SelectValue placeholder="Grade" />
+              </SelectTrigger>
+              <SelectContent>
+                {Object.entries(GRADES).map(([grade, points]) => (
+                  <SelectItem key={grade} value={grade}>
+                    {grade} ({points})
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <Button
+            onClick={addCourse}
+            disabled={!selectedCourseCode || !selectedGrade}
+            className="bg-primary hover:bg-primary/90"
+          >
+            <Plus className="w-4 h-4 mr-2" />
+            Add
+          </Button>
+        </div>
+      </Card>
 
       {/* Selected Courses */}
       {selectedCourses.length > 0 && (

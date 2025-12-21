@@ -1,0 +1,5088 @@
+{
+  "semester": "2025-26-2",
+  "slotMap": {
+    "1": "08:00-09:00",
+    "2": "09:00-10:00",
+    "3": "10:00-11:00",
+    "4": "11:00-12:00",
+    "5": "12:00-13:00",
+    "6": "13:00-14:00",
+    "7": "14:00-15:00",
+    "8": "15:00-16:00",
+    "9": "16:00-17:00",
+    "10": "17:00-18:00",
+    "11": "18:00-19:00"
+  },
+  "courses": {
+    "AN F312": {
+      "title": "AIRCRAFT PROPULSION",
+      "credits": 3,
+      "L": 3,
+      "P": 0,
+      "sections": {
+        "L": [
+          {
+            "section": "L1",
+            "room": "G205",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              5,
+              11
+            ],
+            "timeRanges": [
+              "12:00-13:00",
+              "18:00-19:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "F102",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              2,
+              14
+            ],
+            "timeRanges": [
+              "09:00-10:00",
+              "UNKNOWN(14)"
+            ]
+          }
+        ],
+        "T": [],
+        "P": []
+      }
+    },
+    "BIO F215": {
+      "title": "BIOPHYSICS",
+      "credits": 3,
+      "L": 3,
+      "P": 0,
+      "sections": {
+        "L": [
+          {
+            "section": "L1",
+            "room": "G101",
+            "days": [
+              "M"
+            ],
+            "slots": [
+              6,
+              7
+            ],
+            "timeRanges": [
+              "13:00-14:00",
+              "14:00-15:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "G101",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              4,
+              9
+            ],
+            "timeRanges": [
+              "11:00-12:00",
+              "16:00-17:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "G101",
+            "days": [
+              "W"
+            ],
+            "slots": [
+              1,
+              11
+            ],
+            "timeRanges": [
+              "08:00-09:00",
+              "18:00-19:00"
+            ]
+          }
+        ],
+        "T": [],
+        "P": []
+      }
+    },
+    "BIO F243": {
+      "title": "GENETICS",
+      "credits": 3,
+      "L": 3,
+      "P": 0,
+      "sections": {
+        "L": [
+          {
+            "section": "L1",
+            "room": "G101",
+            "days": [
+              "T"
+            ],
+            "slots": [
+              10,
+              10
+            ],
+            "timeRanges": [
+              "17:00-18:00",
+              "17:00-18:00"
+            ]
+          }
+        ],
+        "T": [],
+        "P": []
+      }
+    },
+    "BIO F266": {
+      "title": "STUDY PROJECT",
+      "credits": 3,
+      "L": 0,
+      "P": 0,
+      "sections": {
+        "L": [
+          {
+            "section": "L1",
+            "room": "G101",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              8,
+              12
+            ],
+            "timeRanges": [
+              "15:00-16:00",
+              "UNKNOWN(12)"
+            ]
+          }
+        ],
+        "T": [],
+        "P": []
+      }
+    },
+    "BIO F342": {
+      "title": "IMMUNOLOGY",
+      "credits": 3,
+      "L": 3,
+      "P": 0,
+      "sections": {
+        "L": [],
+        "T": [],
+        "P": []
+      }
+    },
+    "BIO F366": {
+      "title": "LABORATORY PROJECT",
+      "credits": 3,
+      "L": 0,
+      "P": 0,
+      "sections": {
+        "L": [],
+        "T": [],
+        "P": []
+      }
+    },
+    "BIO F367": {
+      "title": "LABORATORY PROJECT",
+      "credits": 3,
+      "L": 0,
+      "P": 0,
+      "sections": {
+        "L": [],
+        "T": [],
+        "P": []
+      }
+    },
+    "BIO F376": {
+      "title": "DESIGN PROJECT",
+      "credits": 3,
+      "L": 0,
+      "P": 0,
+      "sections": {
+        "L": [],
+        "T": [],
+        "P": []
+      }
+    },
+    "BIO F377": {
+      "title": "DESIGN PROJECT",
+      "credits": 3,
+      "L": 0,
+      "P": 0,
+      "sections": {
+        "L": [
+          {
+            "section": "L1",
+            "room": "G102",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              5,
+              11
+            ],
+            "timeRanges": [
+              "12:00-13:00",
+              "18:00-19:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "G102",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              4,
+              9
+            ],
+            "timeRanges": [
+              "11:00-12:00",
+              "16:00-17:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "G101",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              2,
+              11
+            ],
+            "timeRanges": [
+              "09:00-10:00",
+              "18:00-19:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "G102",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              4,
+              9
+            ],
+            "timeRanges": [
+              "11:00-12:00",
+              "16:00-17:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "G102",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              5,
+              10
+            ],
+            "timeRanges": [
+              "12:00-13:00",
+              "17:00-18:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "G103",
+            "days": [
+              "M"
+            ],
+            "slots": [
+              7,
+              11
+            ],
+            "timeRanges": [
+              "14:00-15:00",
+              "18:00-19:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "F204",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              3,
+              9
+            ],
+            "timeRanges": [
+              "10:00-11:00",
+              "16:00-17:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "F105",
+            "days": [
+              "M"
+            ],
+            "slots": [
+              11
+            ],
+            "timeRanges": [
+              "18:00-19:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "F102",
+            "days": [
+              "W"
+            ],
+            "slots": [
+              3,
+              13
+            ],
+            "timeRanges": [
+              "10:00-11:00",
+              "UNKNOWN(13)"
+            ]
+          }
+        ],
+        "T": [],
+        "P": [
+          {
+            "section": "P1",
+            "room": "A123",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              8,
+              9
+            ],
+            "timeRanges": [
+              "15:00-16:00",
+              "16:00-17:00"
+            ]
+          }
+        ]
+      }
+    },
+    "BITS F111": {
+      "title": "THERMODYNAMICS",
+      "credits": 3,
+      "L": 3,
+      "P": 0,
+      "sections": {
+        "L": [
+          {
+            "section": "L1",
+            "room": "G107",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              7,
+              12
+            ],
+            "timeRanges": [
+              "14:00-15:00",
+              "UNKNOWN(12)"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "I111",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              2,
+              11
+            ],
+            "timeRanges": [
+              "09:00-10:00",
+              "18:00-19:00"
+            ]
+          }
+        ],
+        "T": [],
+        "P": []
+      }
+    },
+    "BITS F219": {
+      "title": "PROCESS ENGINEERING",
+      "credits": 3,
+      "L": 2,
+      "P": 1,
+      "sections": {
+        "L": [
+          {
+            "section": "L1",
+            "room": "F105",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              4,
+              14
+            ],
+            "timeRanges": [
+              "11:00-12:00",
+              "UNKNOWN(14)"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "F208",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              2,
+              11
+            ],
+            "timeRanges": [
+              "09:00-10:00",
+              "18:00-19:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "J219",
+            "days": [
+              "M"
+            ],
+            "slots": [
+              2,
+              3
+            ],
+            "timeRanges": [
+              "09:00-10:00",
+              "10:00-11:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "I122",
+            "days": [
+              "T"
+            ],
+            "slots": [
+              9,
+              13
+            ],
+            "timeRanges": [
+              "16:00-17:00",
+              "UNKNOWN(13)"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "G202",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              2,
+              11
+            ],
+            "timeRanges": [
+              "09:00-10:00",
+              "18:00-19:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "J218",
+            "days": [
+              "T"
+            ],
+            "slots": [
+              9,
+              13
+            ],
+            "timeRanges": [
+              "16:00-17:00",
+              "UNKNOWN(13)"
+            ]
+          }
+        ],
+        "T": [],
+        "P": []
+      }
+    },
+    "BITS F412": {
+      "title": "PRACTICE SCHOOL II",
+      "credits": 2,
+      "L": 0,
+      "P": 0,
+      "sections": {
+        "L": [],
+        "T": [],
+        "P": []
+      }
+    },
+    "BITS F413": {
+      "title": "PRACTICE SCHOOL II",
+      "credits": 2,
+      "L": 0,
+      "P": 0,
+      "sections": {
+        "L": [
+          {
+            "section": "L1",
+            "room": "I122",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              5,
+              11
+            ],
+            "timeRanges": [
+              "12:00-13:00",
+              "18:00-19:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "G204",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              5,
+              11
+            ],
+            "timeRanges": [
+              "12:00-13:00",
+              "18:00-19:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "G204",
+            "days": [
+              "T"
+            ],
+            "slots": [
+              9,
+              13
+            ],
+            "timeRanges": [
+              "16:00-17:00",
+              "UNKNOWN(13)"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "J214",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              4,
+              9
+            ],
+            "timeRanges": [
+              "11:00-12:00",
+              "16:00-17:00"
+            ]
+          }
+        ],
+        "T": [],
+        "P": []
+      }
+    },
+    "BITS F441": {
+      "title": "ROBOTICS",
+      "credits": 3,
+      "L": 3,
+      "P": 0,
+      "sections": {
+        "L": [
+          {
+            "section": "L1",
+            "room": "F204",
+            "days": [
+              "T"
+            ],
+            "slots": [
+              9,
+              13
+            ],
+            "timeRanges": [
+              "16:00-17:00",
+              "UNKNOWN(13)"
+            ]
+          }
+        ],
+        "T": [],
+        "P": []
+      }
+    },
+    "BITS F463": {
+      "title": "CRYPTOGRAPHY",
+      "credits": 3,
+      "L": 3,
+      "P": 0,
+      "sections": {
+        "L": [],
+        "T": [],
+        "P": []
+      }
+    },
+    "BITS F464": {
+      "title": "MACHINE LEARNING",
+      "credits": 3,
+      "L": 3,
+      "P": 0,
+      "sections": {
+        "L": [
+          {
+            "section": "L1",
+            "room": "I122",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              5,
+              9
+            ],
+            "timeRanges": [
+              "12:00-13:00",
+              "16:00-17:00"
+            ]
+          }
+        ],
+        "T": [],
+        "P": []
+      }
+    },
+    "BITS G529": {
+      "title": "RESEARCH PROJECT I",
+      "credits": 6,
+      "L": 0,
+      "P": 0,
+      "sections": {
+        "L": [],
+        "T": [],
+        "P": []
+      }
+    },
+    "BITS G539": {
+      "title": "RESEARCH PROJECT II",
+      "credits": 6,
+      "L": 0,
+      "P": 0,
+      "sections": {
+        "L": [],
+        "T": [],
+        "P": []
+      }
+    },
+    "BITS G540": {
+      "title": "RESEARCH PRACTICE",
+      "credits": 4,
+      "L": 0,
+      "P": 0,
+      "sections": {
+        "L": [],
+        "T": [],
+        "P": []
+      }
+    },
+    "BITS G649": {
+      "title": "READING COURSE",
+      "credits": 5,
+      "L": 0,
+      "P": 0,
+      "sections": {
+        "L": [
+          {
+            "section": "L1",
+            "room": "F109",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              1,
+              10
+            ],
+            "timeRanges": [
+              "08:00-09:00",
+              "17:00-18:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "F109",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              4,
+              9
+            ],
+            "timeRanges": [
+              "11:00-12:00",
+              "16:00-17:00"
+            ]
+          }
+        ],
+        "T": [],
+        "P": []
+      }
+    },
+    "CE F243": {
+      "title": "SOIL MECHANICS",
+      "credits": 4,
+      "L": 3,
+      "P": 1,
+      "sections": {
+        "L": [
+          {
+            "section": "L1",
+            "room": "F109",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              8,
+              13
+            ],
+            "timeRanges": [
+              "15:00-16:00",
+              "UNKNOWN(13)"
+            ]
+          }
+        ],
+        "T": [],
+        "P": []
+      }
+    },
+    "CE F266": {
+      "title": "STUDY PROJECT",
+      "credits": 3,
+      "L": 0,
+      "P": 0,
+      "sections": {
+        "L": [
+          {
+            "section": "L1",
+            "room": "F109",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              4,
+              12
+            ],
+            "timeRanges": [
+              "11:00-12:00",
+              "UNKNOWN(12)"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "F109",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              5,
+              10
+            ],
+            "timeRanges": [
+              "12:00-13:00",
+              "17:00-18:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "F204",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              2,
+              14
+            ],
+            "timeRanges": [
+              "09:00-10:00",
+              "UNKNOWN(14)"
+            ]
+          }
+        ],
+        "T": [],
+        "P": []
+      }
+    },
+    "CE F366": {
+      "title": "LABORATORY PROJECT",
+      "credits": 3,
+      "L": 0,
+      "P": 0,
+      "sections": {
+        "L": [],
+        "T": [],
+        "P": []
+      }
+    },
+    "CE F367": {
+      "title": "LABORATORY PROJECT",
+      "credits": 3,
+      "L": 0,
+      "P": 0,
+      "sections": {
+        "L": [
+          {
+            "section": "L1",
+            "room": "F109",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              2,
+              11
+            ],
+            "timeRanges": [
+              "09:00-10:00",
+              "18:00-19:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "F204",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              1,
+              10
+            ],
+            "timeRanges": [
+              "08:00-09:00",
+              "17:00-18:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "F203",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              4,
+              9
+            ],
+            "timeRanges": [
+              "11:00-12:00",
+              "16:00-17:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "F109",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              3,
+              13
+            ],
+            "timeRanges": [
+              "10:00-11:00",
+              "UNKNOWN(13)"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "F203",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              2,
+              9
+            ],
+            "timeRanges": [
+              "09:00-10:00",
+              "16:00-17:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "F203",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              4,
+              10
+            ],
+            "timeRanges": [
+              "11:00-12:00",
+              "17:00-18:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "F203",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              5,
+              12
+            ],
+            "timeRanges": [
+              "12:00-13:00",
+              "UNKNOWN(12)"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "F203",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              3,
+              13
+            ],
+            "timeRanges": [
+              "10:00-11:00",
+              "UNKNOWN(13)"
+            ]
+          }
+        ],
+        "T": [],
+        "P": []
+      }
+    },
+    "CHE F241": {
+      "title": "HEAT TRANSFER",
+      "credits": 3,
+      "L": 3,
+      "P": 0,
+      "sections": {
+        "L": [
+          {
+            "section": "L1",
+            "room": "F205",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              1,
+              10
+            ],
+            "timeRanges": [
+              "08:00-09:00",
+              "17:00-18:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "F205",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              5,
+              11
+            ],
+            "timeRanges": [
+              "12:00-13:00",
+              "18:00-19:00"
+            ]
+          }
+        ],
+        "T": [],
+        "P": []
+      }
+    },
+    "CHE F266": {
+      "title": "STUDY PROJECT",
+      "credits": 3,
+      "L": 0,
+      "P": 0,
+      "sections": {
+        "L": [],
+        "T": [],
+        "P": []
+      }
+    },
+    "CHE F341": {
+      "title": "CHEMICAL ENGG LAB II",
+      "credits": 3,
+      "L": 0,
+      "P": 3,
+      "sections": {
+        "L": [
+          {
+            "section": "L1",
+            "room": "F205",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              2,
+              14
+            ],
+            "timeRanges": [
+              "09:00-10:00",
+              "UNKNOWN(14)"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "F205",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              5,
+              10
+            ],
+            "timeRanges": [
+              "12:00-13:00",
+              "17:00-18:00"
+            ]
+          }
+        ],
+        "T": [],
+        "P": []
+      }
+    },
+    "CHE F376": {
+      "title": "DESIGN PROJECT",
+      "credits": 3,
+      "L": 0,
+      "P": 0,
+      "sections": {
+        "L": [],
+        "T": [],
+        "P": []
+      }
+    },
+    "CHE F377": {
+      "title": "DESIGN PROJECT",
+      "credits": 3,
+      "L": 0,
+      "P": 0,
+      "sections": {
+        "L": [
+          {
+            "section": "L1",
+            "room": "F205",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              2,
+              11
+            ],
+            "timeRanges": [
+              "09:00-10:00",
+              "18:00-19:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "F204",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              4,
+              12
+            ],
+            "timeRanges": [
+              "11:00-12:00",
+              "UNKNOWN(12)"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "F204",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              4,
+              9
+            ],
+            "timeRanges": [
+              "11:00-12:00",
+              "16:00-17:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "G104",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              7,
+              7
+            ],
+            "timeRanges": [
+              "14:00-15:00",
+              "14:00-15:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "G103",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              1,
+              10
+            ],
+            "timeRanges": [
+              "08:00-09:00",
+              "17:00-18:00"
+            ]
+          }
+        ],
+        "T": [],
+        "P": []
+      }
+    },
+    "CHEM F242": {
+      "title": "CHEMICAL EXPER I",
+      "credits": 3,
+      "L": 0,
+      "P": 3,
+      "sections": {
+        "L": [],
+        "T": [],
+        "P": []
+      }
+    },
+    "CHEM F243": {
+      "title": "ORGANIC CHEMISTRY II",
+      "credits": 3,
+      "L": 3,
+      "P": 0,
+      "sections": {
+        "L": [
+          {
+            "section": "L1",
+            "room": "G103",
+            "days": [
+              "W"
+            ],
+            "slots": [
+              8,
+              13
+            ],
+            "timeRanges": [
+              "15:00-16:00",
+              "UNKNOWN(13)"
+            ]
+          }
+        ],
+        "T": [],
+        "P": []
+      }
+    },
+    "CHEM F266": {
+      "title": "STUDY PROJECT",
+      "credits": 3,
+      "L": 0,
+      "P": 0,
+      "sections": {
+        "L": [
+          {
+            "section": "L1",
+            "room": "G103",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              4,
+              9
+            ],
+            "timeRanges": [
+              "11:00-12:00",
+              "16:00-17:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "G102",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              2,
+              11
+            ],
+            "timeRanges": [
+              "09:00-10:00",
+              "18:00-19:00"
+            ]
+          }
+        ],
+        "T": [],
+        "P": []
+      }
+    },
+    "CHEM F341": {
+      "title": "CHEMICAL EXPER II",
+      "credits": 4,
+      "L": 0,
+      "P": 4,
+      "sections": {
+        "L": [
+          {
+            "section": "L1",
+            "room": "G103",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              8,
+              12
+            ],
+            "timeRanges": [
+              "15:00-16:00",
+              "UNKNOWN(12)"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "G103",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              9,
+              9
+            ],
+            "timeRanges": [
+              "16:00-17:00",
+              "16:00-17:00"
+            ]
+          }
+        ],
+        "T": [],
+        "P": []
+      }
+    },
+    "CHEM F366": {
+      "title": "LABORATORY PROJECT",
+      "credits": 3,
+      "L": 0,
+      "P": 0,
+      "sections": {
+        "L": [],
+        "T": [],
+        "P": []
+      }
+    },
+    "CHEM F367": {
+      "title": "LABORATORY PROJECT",
+      "credits": 3,
+      "L": 0,
+      "P": 0,
+      "sections": {
+        "L": [],
+        "T": [],
+        "P": []
+      }
+    },
+    "CHEM F376": {
+      "title": "DESIGN PROJECT",
+      "credits": 3,
+      "L": 0,
+      "P": 0,
+      "sections": {
+        "L": [],
+        "T": [],
+        "P": []
+      }
+    },
+    "CHEM F377": {
+      "title": "DESIGN PROJECT",
+      "credits": 3,
+      "L": 0,
+      "P": 0,
+      "sections": {
+        "L": [
+          {
+            "section": "L1",
+            "room": "G104",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              5,
+              11
+            ],
+            "timeRanges": [
+              "12:00-13:00",
+              "18:00-19:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "G104",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              2,
+              11
+            ],
+            "timeRanges": [
+              "09:00-10:00",
+              "18:00-19:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "G104",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              3,
+              9
+            ],
+            "timeRanges": [
+              "10:00-11:00",
+              "16:00-17:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "G104",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              4,
+              10
+            ],
+            "timeRanges": [
+              "11:00-12:00",
+              "17:00-18:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "F105",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              2,
+              13
+            ],
+            "timeRanges": [
+              "09:00-10:00",
+              "UNKNOWN(13)"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "F102",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              8,
+              13
+            ],
+            "timeRanges": [
+              "15:00-16:00",
+              "UNKNOWN(13)"
+            ]
+          }
+        ],
+        "T": [],
+        "P": [
+          {
+            "section": "P9",
+            "room": "D311",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              9,
+              10
+            ],
+            "timeRanges": [
+              "16:00-17:00",
+              "17:00-18:00"
+            ]
+          },
+          {
+            "section": "P10",
+            "room": "D311",
+            "days": [
+              "T"
+            ],
+            "slots": [
+              3,
+              4
+            ],
+            "timeRanges": [
+              "10:00-11:00",
+              "11:00-12:00"
+            ]
+          },
+          {
+            "section": "P1",
+            "room": "D312",
+            "days": [
+              "M"
+            ],
+            "slots": [
+              6,
+              7
+            ],
+            "timeRanges": [
+              "13:00-14:00",
+              "14:00-15:00"
+            ]
+          },
+          {
+            "section": "P2",
+            "room": "D313",
+            "days": [
+              "W"
+            ],
+            "slots": [
+              6,
+              7
+            ],
+            "timeRanges": [
+              "13:00-14:00",
+              "14:00-15:00"
+            ]
+          }
+        ]
+      }
+    },
+    "CS F212": {
+      "title": "DATA BASE SYSTEMS",
+      "credits": 4,
+      "L": 3,
+      "P": 1,
+      "sections": {
+        "L": [
+          {
+            "section": "L1",
+            "room": "F106",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              4,
+              9
+            ],
+            "timeRanges": [
+              "11:00-12:00",
+              "16:00-17:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "F102",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              4,
+              9
+            ],
+            "timeRanges": [
+              "11:00-12:00",
+              "16:00-17:00"
+            ]
+          }
+        ],
+        "T": [],
+        "P": []
+      }
+    },
+    "CS F266": {
+      "title": "STUDY PROJECT",
+      "credits": 3,
+      "L": 0,
+      "P": 0,
+      "sections": {
+        "L": [],
+        "T": [],
+        "P": []
+      }
+    },
+    "CS F303": {
+      "title": "COMPUTER NETWORKS",
+      "credits": 4,
+      "L": 3,
+      "P": 1,
+      "sections": {
+        "L": [
+          {
+            "section": "L1",
+            "room": "I213",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              2,
+              11
+            ],
+            "timeRanges": [
+              "09:00-10:00",
+              "18:00-19:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "F106",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              3,
+              10
+            ],
+            "timeRanges": [
+              "10:00-11:00",
+              "17:00-18:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "I113",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              5,
+              10
+            ],
+            "timeRanges": [
+              "12:00-13:00",
+              "17:00-18:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "F102",
+            "days": [
+              "W"
+            ],
+            "slots": [
+              5,
+              10
+            ],
+            "timeRanges": [
+              "12:00-13:00",
+              "17:00-18:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "F102",
+            "days": [
+              "T"
+            ],
+            "slots": [
+              3,
+              13
+            ],
+            "timeRanges": [
+              "10:00-11:00",
+              "UNKNOWN(13)"
+            ]
+          }
+        ],
+        "T": [],
+        "P": []
+      }
+    },
+    "CS F366": {
+      "title": "LABORATORY PROJECT",
+      "credits": 3,
+      "L": 0,
+      "P": 0,
+      "sections": {
+        "L": [],
+        "T": [],
+        "P": []
+      }
+    },
+    "CS F367": {
+      "title": "LABORATORY PROJECT",
+      "credits": 3,
+      "L": 0,
+      "P": 0,
+      "sections": {
+        "L": [],
+        "T": [],
+        "P": []
+      }
+    },
+    "CS F372": {
+      "title": "OPERATING SYSTEMS",
+      "credits": 3,
+      "L": 3,
+      "P": 0,
+      "sections": {
+        "L": [],
+        "T": [],
+        "P": []
+      }
+    },
+    "CS F376": {
+      "title": "DESIGN PROJECT",
+      "credits": 3,
+      "L": 0,
+      "P": 0,
+      "sections": {
+        "L": [],
+        "T": [],
+        "P": []
+      }
+    },
+    "CS F377": {
+      "title": "DESIGN PROJECT",
+      "credits": 3,
+      "L": 0,
+      "P": 0,
+      "sections": {
+        "L": [
+          {
+            "section": "L1",
+            "room": "F106",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              1,
+              10
+            ],
+            "timeRanges": [
+              "08:00-09:00",
+              "17:00-18:00"
+            ]
+          }
+        ],
+        "T": [],
+        "P": []
+      }
+    },
+    "CS F415": {
+      "title": "DATA MINING",
+      "credits": 3,
+      "L": 3,
+      "P": 0,
+      "sections": {
+        "L": [
+          {
+            "section": "L1",
+            "room": "G107",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              2,
+              11
+            ],
+            "timeRanges": [
+              "09:00-10:00",
+              "18:00-19:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "J120",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              1,
+              10
+            ],
+            "timeRanges": [
+              "08:00-09:00",
+              "17:00-18:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "I213",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              5,
+              11
+            ],
+            "timeRanges": [
+              "12:00-13:00",
+              "18:00-19:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "I211",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              4,
+              9
+            ],
+            "timeRanges": [
+              "11:00-12:00",
+              "16:00-17:00"
+            ]
+          }
+        ],
+        "T": [],
+        "P": []
+      }
+    },
+    "CS F491": {
+      "title": "SPECIAL PROJECT",
+      "credits": 3,
+      "L": 0,
+      "P": 0,
+      "sections": {
+        "L": [],
+        "T": [],
+        "P": []
+      }
+    },
+    "CS G513": {
+      "title": "NETWORK SECURITY",
+      "credits": 4,
+      "L": 3,
+      "P": 1,
+      "sections": {
+        "L": [
+          {
+            "section": "L1",
+            "room": "I211",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              3,
+              10
+            ],
+            "timeRanges": [
+              "10:00-11:00",
+              "17:00-18:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "I211",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              4,
+              12
+            ],
+            "timeRanges": [
+              "11:00-12:00",
+              "UNKNOWN(12)"
+            ]
+          }
+        ],
+        "T": [],
+        "P": []
+      }
+    },
+    "CS G527": {
+      "title": "CLOUD COMPUTING",
+      "credits": 5,
+      "L": 3,
+      "P": 0,
+      "sections": {
+        "L": [
+          {
+            "section": "L1",
+            "room": "F102",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              4,
+              9
+            ],
+            "timeRanges": [
+              "11:00-12:00",
+              "16:00-17:00"
+            ]
+          }
+        ],
+        "T": [],
+        "P": []
+      }
+    },
+    "ECE F242": {
+      "title": "CONTROL SYSTEMS",
+      "credits": 3,
+      "L": 3,
+      "P": 0,
+      "sections": {
+        "L": [],
+        "T": [
+          {
+            "section": "T5",
+            "room": "I212",
+            "days": [
+              "T"
+            ],
+            "slots": [
+              1
+            ],
+            "timeRanges": [
+              "08:00-09:00"
+            ]
+          },
+          {
+            "section": "T6",
+            "room": "I212",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              1
+            ],
+            "timeRanges": [
+              "08:00-09:00"
+            ]
+          }
+        ],
+        "P": []
+      }
+    },
+    "ECE F243": {
+      "title": "SIGNALS & SYSTEMS",
+      "credits": 3,
+      "L": 3,
+      "P": 0,
+      "sections": {
+        "L": [
+          {
+            "section": "L1",
+            "room": "F105",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              8,
+              13
+            ],
+            "timeRanges": [
+              "15:00-16:00",
+              "UNKNOWN(13)"
+            ]
+          }
+        ],
+        "T": [
+          {
+            "section": "T7",
+            "room": "I114",
+            "days": [
+              "T"
+            ],
+            "slots": [
+              1
+            ],
+            "timeRanges": [
+              "08:00-09:00"
+            ]
+          },
+          {
+            "section": "T8",
+            "room": "I114",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              1
+            ],
+            "timeRanges": [
+              "08:00-09:00"
+            ]
+          }
+        ],
+        "P": []
+      }
+    },
+    "ECE F341": {
+      "title": "ANALOG ELECTRONICS",
+      "credits": 4,
+      "L": 3,
+      "P": 1,
+      "sections": {
+        "L": [
+          {
+            "section": "L1",
+            "room": "F208",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              2,
+              14
+            ],
+            "timeRanges": [
+              "09:00-10:00",
+              "UNKNOWN(14)"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "F103",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              4,
+              12
+            ],
+            "timeRanges": [
+              "11:00-12:00",
+              "UNKNOWN(12)"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "F104",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              7,
+              12
+            ],
+            "timeRanges": [
+              "14:00-15:00",
+              "UNKNOWN(12)"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "F108",
+            "days": [
+              "M"
+            ],
+            "slots": [
+              5,
+              7
+            ],
+            "timeRanges": [
+              "12:00-13:00",
+              "14:00-15:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "F208",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              1,
+              10
+            ],
+            "timeRanges": [
+              "08:00-09:00",
+              "17:00-18:00"
+            ]
+          }
+        ],
+        "T": [],
+        "P": []
+      }
+    },
+    "ECON F242": {
+      "title": "MICROECONOMICS",
+      "credits": 3,
+      "L": 3,
+      "P": 0,
+      "sections": {
+        "L": [],
+        "T": [],
+        "P": []
+      }
+    },
+    "ECON F243": {
+      "title": "MACROECONOMICS",
+      "credits": 3,
+      "L": 3,
+      "P": 0,
+      "sections": {
+        "L": [
+          {
+            "section": "L1",
+            "room": "F208",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              8,
+              13
+            ],
+            "timeRanges": [
+              "15:00-16:00",
+              "UNKNOWN(13)"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "F208",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              5,
+              7
+            ],
+            "timeRanges": [
+              "12:00-13:00",
+              "14:00-15:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "F207",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              8,
+              12
+            ],
+            "timeRanges": [
+              "15:00-16:00",
+              "UNKNOWN(12)"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "G208",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              9,
+              9
+            ],
+            "timeRanges": [
+              "16:00-17:00",
+              "16:00-17:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "F207",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              4,
+              12
+            ],
+            "timeRanges": [
+              "11:00-12:00",
+              "UNKNOWN(12)"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "F106",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              4,
+              7
+            ],
+            "timeRanges": [
+              "11:00-12:00",
+              "14:00-15:00"
+            ]
+          },
+          {
+            "section": "L2",
+            "room": "F208",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              8,
+              7
+            ],
+            "timeRanges": [
+              "15:00-16:00",
+              "14:00-15:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "F106",
+            "days": [
+              "T"
+            ],
+            "slots": [
+              1,
+              7
+            ],
+            "timeRanges": [
+              "08:00-09:00",
+              "14:00-15:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "F208",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              4,
+              9
+            ],
+            "timeRanges": [
+              "11:00-12:00",
+              "16:00-17:00"
+            ]
+          }
+        ],
+        "T": [],
+        "P": []
+      }
+    },
+    "EEE F111": {
+      "title": "ELECTRICAL SCIENCES",
+      "credits": 3,
+      "L": 3,
+      "P": 0,
+      "sections": {
+        "L": [
+          {
+            "section": "L1",
+            "room": "F102",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              4,
+              9
+            ],
+            "timeRanges": [
+              "11:00-12:00",
+              "16:00-17:00"
+            ]
+          }
+        ],
+        "T": [],
+        "P": []
+      }
+    },
+    "EEE F242": {
+      "title": "CONTROL SYSTEMS",
+      "credits": 3,
+      "L": 3,
+      "P": 0,
+      "sections": {
+        "L": [],
+        "T": [
+          {
+            "section": "T5",
+            "room": "I212",
+            "days": [
+              "T"
+            ],
+            "slots": [
+              1
+            ],
+            "timeRanges": [
+              "08:00-09:00"
+            ]
+          },
+          {
+            "section": "T6",
+            "room": "I212",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              1
+            ],
+            "timeRanges": [
+              "08:00-09:00"
+            ]
+          }
+        ],
+        "P": []
+      }
+    },
+    "EEE F243": {
+      "title": "SIGNALS & SYSTEMS",
+      "credits": 3,
+      "L": 3,
+      "P": 0,
+      "sections": {
+        "L": [
+          {
+            "section": "L1",
+            "room": "F105",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              8,
+              13
+            ],
+            "timeRanges": [
+              "15:00-16:00",
+              "UNKNOWN(13)"
+            ]
+          }
+        ],
+        "T": [
+          {
+            "section": "T7",
+            "room": "I114",
+            "days": [
+              "T"
+            ],
+            "slots": [
+              1
+            ],
+            "timeRanges": [
+              "08:00-09:00"
+            ]
+          },
+          {
+            "section": "T8",
+            "room": "I114",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              1
+            ],
+            "timeRanges": [
+              "08:00-09:00"
+            ]
+          }
+        ],
+        "P": [
+          {
+            "section": "P1",
+            "room": "K125",
+            "days": [
+              "M"
+            ],
+            "slots": [
+              2,
+              3
+            ],
+            "timeRanges": [
+              "09:00-10:00",
+              "10:00-11:00"
+            ]
+          }
+        ]
+      }
+    },
+    "EEE F266": {
+      "title": "STUDY PROJECT",
+      "credits": 3,
+      "L": 0,
+      "P": 0,
+      "sections": {
+        "L": [],
+        "T": [],
+        "P": []
+      }
+    },
+    "EEE F312": {
+      "title": "POWER SYSTEMS",
+      "credits": 3,
+      "L": 3,
+      "P": 0,
+      "sections": {
+        "L": [
+          {
+            "section": "L1",
+            "room": "I114",
+            "days": [
+              "W"
+            ],
+            "slots": [
+              10,
+              13
+            ],
+            "timeRanges": [
+              "17:00-18:00",
+              "UNKNOWN(13)"
+            ]
+          }
+        ],
+        "T": [],
+        "P": []
+      }
+    },
+    "EEE F341": {
+      "title": "ANALOG ELECTRONICS",
+      "credits": 4,
+      "L": 3,
+      "P": 1,
+      "sections": {
+        "L": [],
+        "T": [],
+        "P": []
+      }
+    },
+    "EEE F342": {
+      "title": "POWER ELECTRONICS",
+      "credits": 4,
+      "L": 3,
+      "P": 1,
+      "sections": {
+        "L": [],
+        "T": [],
+        "P": []
+      }
+    },
+    "EEE F366": {
+      "title": "LABORATORY PROJECT",
+      "credits": 3,
+      "L": 0,
+      "P": 0,
+      "sections": {
+        "L": [],
+        "T": [],
+        "P": []
+      }
+    },
+    "EEE F367": {
+      "title": "LABORATORY PROJECT",
+      "credits": 3,
+      "L": 0,
+      "P": 0,
+      "sections": {
+        "L": [],
+        "T": [],
+        "P": []
+      }
+    },
+    "EEE F376": {
+      "title": "DESIGN PROJECT",
+      "credits": 3,
+      "L": 0,
+      "P": 0,
+      "sections": {
+        "L": [],
+        "T": [],
+        "P": []
+      }
+    },
+    "EEE F377": {
+      "title": "DESIGN PROJECT",
+      "credits": 3,
+      "L": 0,
+      "P": 0,
+      "sections": {
+        "L": [
+          {
+            "section": "L1",
+            "room": "I114",
+            "days": [
+              "T"
+            ],
+            "slots": [
+              9,
+              13
+            ],
+            "timeRanges": [
+              "16:00-17:00",
+              "UNKNOWN(13)"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "I122",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              2,
+              11
+            ],
+            "timeRanges": [
+              "09:00-10:00",
+              "18:00-19:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "I212",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              4,
+              9
+            ],
+            "timeRanges": [
+              "11:00-12:00",
+              "16:00-17:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "I122",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              3,
+              10
+            ],
+            "timeRanges": [
+              "10:00-11:00",
+              "17:00-18:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "I210",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              2,
+              11
+            ],
+            "timeRanges": [
+              "09:00-10:00",
+              "18:00-19:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "J220",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              2,
+              11
+            ],
+            "timeRanges": [
+              "09:00-10:00",
+              "18:00-19:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "I221",
+            "days": [
+              "T"
+            ],
+            "slots": [
+              9,
+              13
+            ],
+            "timeRanges": [
+              "16:00-17:00",
+              "UNKNOWN(13)"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "I210",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              5,
+              11
+            ],
+            "timeRanges": [
+              "12:00-13:00",
+              "18:00-19:00"
+            ]
+          }
+        ],
+        "T": [],
+        "P": []
+      }
+    },
+    "EEE F478": {
+      "title": "POWER SYSTEMS LAB",
+      "credits": 2,
+      "L": 0,
+      "P": 2,
+      "sections": {
+        "L": [],
+        "T": [],
+        "P": []
+      }
+    },
+    "EEE F491": {
+      "title": "SPECIAL PROJECT",
+      "credits": 3,
+      "L": 0,
+      "P": 0,
+      "sections": {
+        "L": [
+          {
+            "section": "L1",
+            "room": "I213",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              4,
+              9
+            ],
+            "timeRanges": [
+              "11:00-12:00",
+              "16:00-17:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "I213",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              3,
+              10
+            ],
+            "timeRanges": [
+              "10:00-11:00",
+              "17:00-18:00"
+            ]
+          }
+        ],
+        "T": [],
+        "P": [
+          {
+            "section": "P1",
+            "room": "I011",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              7,
+              8
+            ],
+            "timeRanges": [
+              "14:00-15:00",
+              "15:00-16:00"
+            ]
+          }
+        ]
+      }
+    },
+    "EEE G526": {
+      "title": "Lightwave Engineering",
+      "credits": 5,
+      "L": 3,
+      "P": 2,
+      "sections": {
+        "L": [
+          {
+            "section": "L1",
+            "room": "I221",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              5,
+              10
+            ],
+            "timeRanges": [
+              "12:00-13:00",
+              "17:00-18:00"
+            ]
+          }
+        ],
+        "T": [],
+        "P": []
+      }
+    },
+    "EEE G547": {
+      "title": "DEVICE DRIVERS",
+      "credits": 5,
+      "L": 3,
+      "P": 2,
+      "sections": {
+        "L": [],
+        "T": [],
+        "P": []
+      }
+    },
+    "EEE G552": {
+      "title": "SOLID STATE DRIVES",
+      "credits": 5,
+      "L": 3,
+      "P": 2,
+      "sections": {
+        "L": [
+          {
+            "section": "L1",
+            "room": "F207",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              2,
+              11
+            ],
+            "timeRanges": [
+              "09:00-10:00",
+              "18:00-19:00"
+            ]
+          }
+        ],
+        "T": [],
+        "P": []
+      }
+    },
+    "GS F223": {
+      "title": "INTRO TO MASS COMM",
+      "credits": 3,
+      "L": 3,
+      "P": 0,
+      "sections": {
+        "L": [
+          {
+            "section": "L1",
+            "room": "J119",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              4,
+              14
+            ],
+            "timeRanges": [
+              "11:00-12:00",
+              "UNKNOWN(14)"
+            ]
+          }
+        ],
+        "T": [],
+        "P": []
+      }
+    },
+    "GS F233": {
+      "title": "PUBLIC POLICY",
+      "credits": 3,
+      "L": 3,
+      "P": 0,
+      "sections": {
+        "L": [],
+        "T": [],
+        "P": []
+      }
+    },
+    "GS F241": {
+      "title": "CREATIVE WRITING",
+      "credits": 3,
+      "L": 3,
+      "P": 0,
+      "sections": {
+        "L": [
+          {
+            "section": "L1",
+            "room": "J206",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              9,
+              9
+            ],
+            "timeRanges": [
+              "16:00-17:00",
+              "16:00-17:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "J219",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              9,
+              9
+            ],
+            "timeRanges": [
+              "16:00-17:00",
+              "16:00-17:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "J217",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              8,
+              12
+            ],
+            "timeRanges": [
+              "15:00-16:00",
+              "UNKNOWN(12)"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "J214",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              5,
+              11
+            ],
+            "timeRanges": [
+              "12:00-13:00",
+              "18:00-19:00"
+            ]
+          }
+        ],
+        "T": [],
+        "P": []
+      }
+    },
+    "HSS F222": {
+      "title": "LINGUISTICS",
+      "credits": 3,
+      "L": 3,
+      "P": 0,
+      "sections": {
+        "L": [
+          {
+            "section": "L1",
+            "room": "J115",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              9,
+              9
+            ],
+            "timeRanges": [
+              "16:00-17:00",
+              "16:00-17:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "J119",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              9,
+              9
+            ],
+            "timeRanges": [
+              "16:00-17:00",
+              "16:00-17:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "J120",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              4,
+              14
+            ],
+            "timeRanges": [
+              "11:00-12:00",
+              "UNKNOWN(14)"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "J107",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              7,
+              7
+            ],
+            "timeRanges": [
+              "14:00-15:00",
+              "14:00-15:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "J115",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              7,
+              7
+            ],
+            "timeRanges": [
+              "14:00-15:00",
+              "14:00-15:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "J107",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              2,
+              11
+            ],
+            "timeRanges": [
+              "09:00-10:00",
+              "18:00-19:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "J115",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              2,
+              11
+            ],
+            "timeRanges": [
+              "09:00-10:00",
+              "18:00-19:00"
+            ]
+          }
+        ],
+        "T": [],
+        "P": []
+      }
+    },
+    "HSS F247": {
+      "title": "SOCIAL INFORMATICS",
+      "credits": 3,
+      "L": 3,
+      "P": 0,
+      "sections": {
+        "L": [
+          {
+            "section": "L1",
+            "room": "J218",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              4,
+              14
+            ],
+            "timeRanges": [
+              "11:00-12:00",
+              "UNKNOWN(14)"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "J218",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              4,
+              9
+            ],
+            "timeRanges": [
+              "11:00-12:00",
+              "16:00-17:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "J219",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              8,
+              12
+            ],
+            "timeRanges": [
+              "15:00-16:00",
+              "UNKNOWN(12)"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "J206",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              5,
+              11
+            ],
+            "timeRanges": [
+              "12:00-13:00",
+              "18:00-19:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "J218",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              9,
+              9
+            ],
+            "timeRanges": [
+              "16:00-17:00",
+              "16:00-17:00"
+            ]
+          }
+        ],
+        "T": [],
+        "P": []
+      }
+    },
+    "HSS F332": {
+      "title": "CINEMATIC ART",
+      "credits": 3,
+      "L": 3,
+      "P": 0,
+      "sections": {
+        "L": [
+          {
+            "section": "L1",
+            "room": "J214",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              7,
+              7
+            ],
+            "timeRanges": [
+              "14:00-15:00",
+              "14:00-15:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "J217",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              9,
+              9
+            ],
+            "timeRanges": [
+              "16:00-17:00",
+              "16:00-17:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "J121",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              4,
+              14
+            ],
+            "timeRanges": [
+              "11:00-12:00",
+              "UNKNOWN(14)"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "J214",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              9,
+              9
+            ],
+            "timeRanges": [
+              "16:00-17:00",
+              "16:00-17:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "J121",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              2,
+              11
+            ],
+            "timeRanges": [
+              "09:00-10:00",
+              "18:00-19:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "J214",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              8,
+              12
+            ],
+            "timeRanges": [
+              "15:00-16:00",
+              "UNKNOWN(12)"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "J107",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              4,
+              9
+            ],
+            "timeRanges": [
+              "11:00-12:00",
+              "16:00-17:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "J120",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              5,
+              11
+            ],
+            "timeRanges": [
+              "12:00-13:00",
+              "18:00-19:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "J206",
+            "days": [
+              "T"
+            ],
+            "slots": [
+              10,
+              13
+            ],
+            "timeRanges": [
+              "17:00-18:00",
+              "UNKNOWN(13)"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "J219",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              4,
+              9
+            ],
+            "timeRanges": [
+              "11:00-12:00",
+              "16:00-17:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "J217",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              4,
+              9
+            ],
+            "timeRanges": [
+              "11:00-12:00",
+              "16:00-17:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "F102",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              4,
+              9
+            ],
+            "timeRanges": [
+              "11:00-12:00",
+              "16:00-17:00"
+            ]
+          }
+        ],
+        "T": [],
+        "P": []
+      }
+    },
+    "INSTR F242": {
+      "title": "CONTROL SYSTEMS",
+      "credits": 3,
+      "L": 3,
+      "P": 0,
+      "sections": {
+        "L": [],
+        "T": [
+          {
+            "section": "T5",
+            "room": "I212",
+            "days": [
+              "T"
+            ],
+            "slots": [
+              1
+            ],
+            "timeRanges": [
+              "08:00-09:00"
+            ]
+          },
+          {
+            "section": "T6",
+            "room": "I212",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              1
+            ],
+            "timeRanges": [
+              "08:00-09:00"
+            ]
+          }
+        ],
+        "P": []
+      }
+    },
+    "INSTR F243": {
+      "title": "SIGNALS & SYSTEMS",
+      "credits": 3,
+      "L": 3,
+      "P": 0,
+      "sections": {
+        "L": [
+          {
+            "section": "L1",
+            "room": "F105",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              8,
+              13
+            ],
+            "timeRanges": [
+              "15:00-16:00",
+              "UNKNOWN(13)"
+            ]
+          }
+        ],
+        "T": [
+          {
+            "section": "T7",
+            "room": "I114",
+            "days": [
+              "T"
+            ],
+            "slots": [
+              1
+            ],
+            "timeRanges": [
+              "08:00-09:00"
+            ]
+          },
+          {
+            "section": "T8",
+            "room": "I114",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              1
+            ],
+            "timeRanges": [
+              "08:00-09:00"
+            ]
+          }
+        ],
+        "P": []
+      }
+    },
+    "INSTR F341": {
+      "title": "ANALOG ELECTRONICS",
+      "credits": 4,
+      "L": 3,
+      "P": 1,
+      "sections": {
+        "L": [],
+        "T": [],
+        "P": []
+      }
+    },
+    "INSTR F342": {
+      "title": "POWER ELECTRONICS",
+      "credits": 4,
+      "L": 3,
+      "P": 1,
+      "sections": {
+        "L": [
+          {
+            "section": "L1",
+            "room": "G208",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              4,
+              12
+            ],
+            "timeRanges": [
+              "11:00-12:00",
+              "UNKNOWN(12)"
+            ]
+          }
+        ],
+        "T": [
+          {
+            "section": "T1",
+            "room": "I222",
+            "days": [
+              "M"
+            ],
+            "slots": [
+              1
+            ],
+            "timeRanges": [
+              "08:00-09:00"
+            ]
+          },
+          {
+            "section": "T2",
+            "room": "I222",
+            "days": [
+              "W"
+            ],
+            "slots": [
+              1
+            ],
+            "timeRanges": [
+              "08:00-09:00"
+            ]
+          }
+        ],
+        "P": []
+      }
+    },
+    "IS F341": {
+      "title": "Software Engineering",
+      "credits": 4,
+      "L": 3,
+      "P": 1,
+      "sections": {
+        "L": [
+          {
+            "section": "L1",
+            "room": "I111",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              4,
+              9
+            ],
+            "timeRanges": [
+              "11:00-12:00",
+              "16:00-17:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "I111",
+            "days": [
+              "W"
+            ],
+            "slots": [
+              3,
+              11
+            ],
+            "timeRanges": [
+              "10:00-11:00",
+              "18:00-19:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "I213",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              1,
+              10
+            ],
+            "timeRanges": [
+              "08:00-09:00",
+              "17:00-18:00"
+            ]
+          }
+        ],
+        "T": [
+          {
+            "section": "T1",
+            "room": "J107",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              10
+            ],
+            "timeRanges": [
+              "17:00-18:00"
+            ]
+          }
+        ],
+        "P": [
+          {
+            "section": "P1",
+            "room": "I114",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              2,
+              3
+            ],
+            "timeRanges": [
+              "09:00-10:00",
+              "10:00-11:00"
+            ]
+          }
+        ]
+      }
+    },
+    "MAC F266": {
+      "title": "STUDY PROJECT",
+      "credits": 3,
+      "L": 3,
+      "P": 0,
+      "sections": {
+        "L": [],
+        "T": [],
+        "P": []
+      }
+    },
+    "MAC F366": {
+      "title": "LABORATORY PROJECT",
+      "credits": 3,
+      "L": 3,
+      "P": 0,
+      "sections": {
+        "L": [],
+        "T": [],
+        "P": []
+      }
+    },
+    "MAC F367": {
+      "title": "LABORATORY PROJECT",
+      "credits": 3,
+      "L": 3,
+      "P": 0,
+      "sections": {
+        "L": [],
+        "T": [],
+        "P": []
+      }
+    },
+    "MAC F376": {
+      "title": "DESIGN PROJECT",
+      "credits": 3,
+      "L": 3,
+      "P": 0,
+      "sections": {
+        "L": [],
+        "T": [],
+        "P": []
+      }
+    },
+    "MAC F377": {
+      "title": "DESIGN PROJECT",
+      "credits": 3,
+      "L": 3,
+      "P": 0,
+      "sections": {
+        "L": [],
+        "T": [],
+        "P": []
+      }
+    },
+    "MAC F491": {
+      "title": "SPECIAL PROJECT",
+      "credits": 3,
+      "L": 0,
+      "P": 0,
+      "sections": {
+        "L": [
+          {
+            "section": "L1",
+            "room": "F102",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              2,
+              11
+            ],
+            "timeRanges": [
+              "09:00-10:00",
+              "18:00-19:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "F103",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              9,
+              9
+            ],
+            "timeRanges": [
+              "16:00-17:00",
+              "16:00-17:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "I112",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              7,
+              7
+            ],
+            "timeRanges": [
+              "14:00-15:00",
+              "14:00-15:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "G107",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              1,
+              10
+            ],
+            "timeRanges": [
+              "08:00-09:00",
+              "17:00-18:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "G107",
+            "days": [
+              "M"
+            ],
+            "slots": [
+              3,
+              9
+            ],
+            "timeRanges": [
+              "10:00-11:00",
+              "16:00-17:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "G107",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              8,
+              13
+            ],
+            "timeRanges": [
+              "15:00-16:00",
+              "UNKNOWN(13)"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "G107",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              5,
+              11
+            ],
+            "timeRanges": [
+              "12:00-13:00",
+              "18:00-19:00"
+            ]
+          }
+        ],
+        "T": [],
+        "P": []
+      }
+    },
+    "MATH F266": {
+      "title": "STUDY PROJECT",
+      "credits": 3,
+      "L": 0,
+      "P": 0,
+      "sections": {
+        "L": [
+          {
+            "section": "L1",
+            "room": "I211",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              2,
+              11
+            ],
+            "timeRanges": [
+              "09:00-10:00",
+              "18:00-19:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "I111",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              4,
+              12
+            ],
+            "timeRanges": [
+              "11:00-12:00",
+              "UNKNOWN(12)"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "G108",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              8,
+              12
+            ],
+            "timeRanges": [
+              "15:00-16:00",
+              "UNKNOWN(12)"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "G108",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              9,
+              9
+            ],
+            "timeRanges": [
+              "16:00-17:00",
+              "16:00-17:00"
+            ]
+          }
+        ],
+        "T": [],
+        "P": []
+      }
+    },
+    "MATH F366": {
+      "title": "LABORATORY PROJECT",
+      "credits": 3,
+      "L": 0,
+      "P": 0,
+      "sections": {
+        "L": [],
+        "T": [],
+        "P": []
+      }
+    },
+    "MATH F367": {
+      "title": "LABORATORY PROJECT",
+      "credits": 3,
+      "L": 0,
+      "P": 0,
+      "sections": {
+        "L": [],
+        "T": [],
+        "P": []
+      }
+    },
+    "MATH F376": {
+      "title": "DESIGN PROJECT",
+      "credits": 3,
+      "L": 0,
+      "P": 0,
+      "sections": {
+        "L": [],
+        "T": [],
+        "P": []
+      }
+    },
+    "MATH F377": {
+      "title": "DESIGN PROJECT",
+      "credits": 3,
+      "L": 0,
+      "P": 0,
+      "sections": {
+        "L": [
+          {
+            "section": "L1",
+            "room": "I122",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              4,
+              9
+            ],
+            "timeRanges": [
+              "11:00-12:00",
+              "16:00-17:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "I213",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              7,
+              13
+            ],
+            "timeRanges": [
+              "14:00-15:00",
+              "UNKNOWN(13)"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "G106",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              5,
+              11
+            ],
+            "timeRanges": [
+              "12:00-13:00",
+              "18:00-19:00"
+            ]
+          }
+        ],
+        "T": [],
+        "P": []
+      }
+    },
+    "MATH F456": {
+      "title": "COSMOLOGY",
+      "credits": 3,
+      "L": 3,
+      "P": 0,
+      "sections": {
+        "L": [
+          {
+            "section": "L1",
+            "room": "J218",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              5,
+              11
+            ],
+            "timeRanges": [
+              "12:00-13:00",
+              "18:00-19:00"
+            ]
+          }
+        ],
+        "T": [],
+        "P": []
+      }
+    },
+    "MATH F491": {
+      "title": "SPECIAL PROJECT",
+      "credits": 3,
+      "L": 0,
+      "P": 0,
+      "sections": {
+        "L": [],
+        "T": [],
+        "P": []
+      }
+    },
+    "MATH G514": {
+      "title": "TOPICS IN ANALYSIS",
+      "credits": 5,
+      "L": 5,
+      "P": 0,
+      "sections": {
+        "L": [
+          {
+            "section": "L1",
+            "room": "I112",
+            "days": [
+              "W"
+            ],
+            "slots": [
+              4,
+              5,
+              10
+            ],
+            "timeRanges": [
+              "11:00-12:00",
+              "12:00-13:00",
+              "17:00-18:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "F107",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              4,
+              9
+            ],
+            "timeRanges": [
+              "11:00-12:00",
+              "16:00-17:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "F107",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              5,
+              11
+            ],
+            "timeRanges": [
+              "12:00-13:00",
+              "18:00-19:00"
+            ]
+          }
+        ],
+        "T": [
+          {
+            "section": "T1",
+            "room": "F107",
+            "days": [
+              "T"
+            ],
+            "slots": [
+              10
+            ],
+            "timeRanges": [
+              "17:00-18:00"
+            ]
+          }
+        ],
+        "P": []
+      }
+    },
+    "ME F220": {
+      "title": "HEAT TRANSFER",
+      "credits": 4,
+      "L": 3,
+      "P": 1,
+      "sections": {
+        "L": [
+          {
+            "section": "L1",
+            "room": "F107",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              1,
+              10
+            ],
+            "timeRanges": [
+              "08:00-09:00",
+              "17:00-18:00"
+            ]
+          }
+        ],
+        "T": [],
+        "P": []
+      }
+    },
+    "ME F266": {
+      "title": "STUDY PROJECT",
+      "credits": 3,
+      "L": 0,
+      "P": 0,
+      "sections": {
+        "L": [
+          {
+            "section": "L1",
+            "room": "F107",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              3,
+              13
+            ],
+            "timeRanges": [
+              "10:00-11:00",
+              "UNKNOWN(13)"
+            ]
+          },
+          {
+            "section": "L2",
+            "room": "F108",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              3,
+              13
+            ],
+            "timeRanges": [
+              "10:00-11:00",
+              "UNKNOWN(13)"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "F103",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              5,
+              10
+            ],
+            "timeRanges": [
+              "12:00-13:00",
+              "17:00-18:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "F107",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              4,
+              12
+            ],
+            "timeRanges": [
+              "11:00-12:00",
+              "UNKNOWN(12)"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "G205",
+            "days": [
+              "W"
+            ],
+            "slots": [
+              10,
+              13
+            ],
+            "timeRanges": [
+              "17:00-18:00",
+              "UNKNOWN(13)"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "G205",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              4,
+              9
+            ],
+            "timeRanges": [
+              "11:00-12:00",
+              "16:00-17:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "F107",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              2,
+              14
+            ],
+            "timeRanges": [
+              "09:00-10:00",
+              "UNKNOWN(14)"
+            ]
+          }
+        ],
+        "T": [
+          {
+            "section": "T2",
+            "room": "F108",
+            "days": [
+              "M"
+            ],
+            "slots": [
+              3
+            ],
+            "timeRanges": [
+              "10:00-11:00"
+            ]
+          },
+          {
+            "section": "T1",
+            "room": "F208",
+            "days": [
+              "M"
+            ],
+            "slots": [
+              3
+            ],
+            "timeRanges": [
+              "10:00-11:00"
+            ]
+          },
+          {
+            "section": "T1",
+            "room": "F107",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              10
+            ],
+            "timeRanges": [
+              "17:00-18:00"
+            ]
+          }
+        ],
+        "P": []
+      }
+    },
+    "ME F366": {
+      "title": "LABORATORY PROJECT",
+      "credits": 3,
+      "L": 0,
+      "P": 0,
+      "sections": {
+        "L": [],
+        "T": [],
+        "P": []
+      }
+    },
+    "ME F367": {
+      "title": "LABORATORY PROJECT",
+      "credits": 3,
+      "L": 0,
+      "P": 0,
+      "sections": {
+        "L": [],
+        "T": [],
+        "P": []
+      }
+    },
+    "ME F376": {
+      "title": "DESIGN PROJECT",
+      "credits": 3,
+      "L": 0,
+      "P": 0,
+      "sections": {
+        "L": [],
+        "T": [],
+        "P": []
+      }
+    },
+    "ME F377": {
+      "title": "DESIGN PROJECT",
+      "credits": 3,
+      "L": 0,
+      "P": 0,
+      "sections": {
+        "L": [
+          {
+            "section": "L1",
+            "room": "G207",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              5,
+              11
+            ],
+            "timeRanges": [
+              "12:00-13:00",
+              "18:00-19:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "G204",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              2,
+              11
+            ],
+            "timeRanges": [
+              "09:00-10:00",
+              "18:00-19:00"
+            ]
+          }
+        ],
+        "T": [],
+        "P": []
+      }
+    },
+    "ME F483": {
+      "title": "WIND ENERGY",
+      "credits": 3,
+      "L": 3,
+      "P": 0,
+      "sections": {
+        "L": [
+          {
+            "section": "L1",
+            "room": "G206",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              4,
+              9
+            ],
+            "timeRanges": [
+              "11:00-12:00",
+              "16:00-17:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "G207",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              5,
+              9
+            ],
+            "timeRanges": [
+              "12:00-13:00",
+              "16:00-17:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "F202",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              4,
+              10
+            ],
+            "timeRanges": [
+              "11:00-12:00",
+              "17:00-18:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "G206",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              5,
+              11
+            ],
+            "timeRanges": [
+              "12:00-13:00",
+              "18:00-19:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "F204",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              5,
+              10
+            ],
+            "timeRanges": [
+              "12:00-13:00",
+              "17:00-18:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "F202",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              2,
+              10
+            ],
+            "timeRanges": [
+              "09:00-10:00",
+              "17:00-18:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "G207",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              5,
+              11
+            ],
+            "timeRanges": [
+              "12:00-13:00",
+              "18:00-19:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "F201",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              4,
+              13
+            ],
+            "timeRanges": [
+              "11:00-12:00",
+              "UNKNOWN(13)"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "I211",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              10,
+              13
+            ],
+            "timeRanges": [
+              "17:00-18:00",
+              "UNKNOWN(13)"
+            ]
+          }
+        ],
+        "T": [],
+        "P": [
+          {
+            "section": "P1",
+            "room": "E210",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              8,
+              9
+            ],
+            "timeRanges": [
+              "15:00-16:00",
+              "16:00-17:00"
+            ]
+          }
+        ]
+      }
+    },
+    "MEL G632": {
+      "title": "ANALOG IC DESIGN",
+      "credits": 5,
+      "L": 3,
+      "P": 2,
+      "sections": {
+        "L": [],
+        "T": [],
+        "P": []
+      }
+    },
+    "MEL G641": {
+      "title": "CAD FOR IC DESIGN",
+      "credits": 5,
+      "L": 3,
+      "P": 2,
+      "sections": {
+        "L": [
+          {
+            "section": "L1",
+            "room": "G206",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              5,
+              11
+            ],
+            "timeRanges": [
+              "12:00-13:00",
+              "18:00-19:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "G204",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              4,
+              9
+            ],
+            "timeRanges": [
+              "11:00-12:00",
+              "16:00-17:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "G204",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              1,
+              10
+            ],
+            "timeRanges": [
+              "08:00-09:00",
+              "17:00-18:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "F106",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              8,
+              12
+            ],
+            "timeRanges": [
+              "15:00-16:00",
+              "UNKNOWN(12)"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "J217",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              2,
+              11
+            ],
+            "timeRanges": [
+              "09:00-10:00",
+              "18:00-19:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "F208",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              5,
+              11
+            ],
+            "timeRanges": [
+              "12:00-13:00",
+              "18:00-19:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "F202",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              4,
+              9
+            ],
+            "timeRanges": [
+              "11:00-12:00",
+              "16:00-17:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "F201",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              4,
+              12
+            ],
+            "timeRanges": [
+              "11:00-12:00",
+              "UNKNOWN(12)"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "G205",
+            "days": [
+              "W"
+            ],
+            "slots": [
+              9,
+              9
+            ],
+            "timeRanges": [
+              "16:00-17:00",
+              "16:00-17:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "G205",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              2,
+              10
+            ],
+            "timeRanges": [
+              "09:00-10:00",
+              "17:00-18:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "G105",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              4,
+              9
+            ],
+            "timeRanges": [
+              "11:00-12:00",
+              "16:00-17:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "G205",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              9,
+              13
+            ],
+            "timeRanges": [
+              "16:00-17:00",
+              "UNKNOWN(13)"
+            ]
+          }
+        ],
+        "T": [],
+        "P": []
+      }
+    },
+    "PHA F266": {
+      "title": "STUDY PROJECT",
+      "credits": 3,
+      "L": 0,
+      "P": 0,
+      "sections": {
+        "L": [
+          {
+            "section": "L1",
+            "room": "G205",
+            "days": [
+              "W"
+            ],
+            "slots": [
+              1,
+              10
+            ],
+            "timeRanges": [
+              "08:00-09:00",
+              "17:00-18:00"
+            ]
+          }
+        ],
+        "T": [],
+        "P": []
+      }
+    },
+    "PHA F341": {
+      "title": "PHARMACOLOGY II",
+      "credits": 3,
+      "L": 2,
+      "P": 1,
+      "sections": {
+        "L": [
+          {
+            "section": "L1",
+            "room": "G105",
+            "days": [
+              "W"
+            ],
+            "slots": [
+              5,
+              10
+            ],
+            "timeRanges": [
+              "12:00-13:00",
+              "17:00-18:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "G105",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              2,
+              14
+            ],
+            "timeRanges": [
+              "09:00-10:00",
+              "UNKNOWN(14)"
+            ]
+          }
+        ],
+        "T": [
+          {
+            "section": "T1",
+            "room": "G105",
+            "days": [
+              "M"
+            ],
+            "slots": [
+              3
+            ],
+            "timeRanges": [
+              "10:00-11:00"
+            ]
+          }
+        ],
+        "P": []
+      }
+    },
+    "PHA F344": {
+      "title": "NATURAL DRUGS",
+      "credits": 3,
+      "L": 2,
+      "P": 1,
+      "sections": {
+        "L": [],
+        "T": [],
+        "P": []
+      }
+    },
+    "PHA F366": {
+      "title": "LABORATORY PROJECT",
+      "credits": 3,
+      "L": 0,
+      "P": 0,
+      "sections": {
+        "L": [],
+        "T": [],
+        "P": []
+      }
+    },
+    "PHA F367": {
+      "title": "LABORATORY PROJECT",
+      "credits": 3,
+      "L": 0,
+      "P": 0,
+      "sections": {
+        "L": [],
+        "T": [],
+        "P": []
+      }
+    },
+    "PHA F376": {
+      "title": "DESIGN PROJECT",
+      "credits": 3,
+      "L": 0,
+      "P": 0,
+      "sections": {
+        "L": [],
+        "T": [],
+        "P": []
+      }
+    },
+    "PHA F377": {
+      "title": "DESIGN PROJECT",
+      "credits": 3,
+      "L": 0,
+      "P": 0,
+      "sections": {
+        "L": [
+          {
+            "section": "L1",
+            "room": "G106",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              2,
+              11
+            ],
+            "timeRanges": [
+              "09:00-10:00",
+              "18:00-19:00"
+            ]
+          }
+        ],
+        "T": [],
+        "P": []
+      }
+    },
+    "PHA F414": {
+      "title": "BIOPHARMACEUTICS",
+      "credits": 3,
+      "L": 3,
+      "P": 0,
+      "sections": {
+        "L": [
+          {
+            "section": "L1",
+            "room": "G108",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              5,
+              11
+            ],
+            "timeRanges": [
+              "12:00-13:00",
+              "18:00-19:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "G107",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              4,
+              13
+            ],
+            "timeRanges": [
+              "11:00-12:00",
+              "UNKNOWN(13)"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "G107",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              5,
+              9
+            ],
+            "timeRanges": [
+              "12:00-13:00",
+              "16:00-17:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "G107",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              3,
+              10
+            ],
+            "timeRanges": [
+              "10:00-11:00",
+              "17:00-18:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "G106",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              2,
+              11
+            ],
+            "timeRanges": [
+              "09:00-10:00",
+              "18:00-19:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "G104",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              8,
+              12
+            ],
+            "timeRanges": [
+              "15:00-16:00",
+              "UNKNOWN(12)"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "G106",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              8,
+              12
+            ],
+            "timeRanges": [
+              "15:00-16:00",
+              "UNKNOWN(12)"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "F104",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              2,
+              14
+            ],
+            "timeRanges": [
+              "09:00-10:00",
+              "UNKNOWN(14)"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "G201",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              7,
+              7
+            ],
+            "timeRanges": [
+              "14:00-15:00",
+              "14:00-15:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "G201",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              4,
+              9
+            ],
+            "timeRanges": [
+              "11:00-12:00",
+              "16:00-17:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "G201",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              1,
+              10
+            ],
+            "timeRanges": [
+              "08:00-09:00",
+              "17:00-18:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "G201",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              5,
+              11
+            ],
+            "timeRanges": [
+              "12:00-13:00",
+              "18:00-19:00"
+            ]
+          }
+        ],
+        "T": [
+          {
+            "section": "T1",
+            "room": "G201",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              1
+            ],
+            "timeRanges": [
+              "08:00-09:00"
+            ]
+          }
+        ],
+        "P": []
+      }
+    },
+    "PHY F244": {
+      "title": "MODERN PHYSICS LAB",
+      "credits": 2,
+      "L": 0,
+      "P": 2,
+      "sections": {
+        "L": [],
+        "T": [],
+        "P": []
+      }
+    },
+    "PHY F315": {
+      "title": "THEORY OF RELATIVITY",
+      "credits": 3,
+      "L": 3,
+      "P": 0,
+      "sections": {
+        "L": [
+          {
+            "section": "L1",
+            "room": "G202",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              7,
+              7
+            ],
+            "timeRanges": [
+              "14:00-15:00",
+              "14:00-15:00"
+            ]
+          }
+        ],
+        "T": [],
+        "P": []
+      }
+    },
+    "PHY F341": {
+      "title": "SOLID STATE PHYSICS",
+      "credits": 3,
+      "L": 3,
+      "P": 0,
+      "sections": {
+        "L": [
+          {
+            "section": "L1",
+            "room": "G201",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              8,
+              12
+            ],
+            "timeRanges": [
+              "15:00-16:00",
+              "UNKNOWN(12)"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "G201",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              9,
+              9
+            ],
+            "timeRanges": [
+              "16:00-17:00",
+              "16:00-17:00"
+            ]
+          }
+        ],
+        "T": [],
+        "P": [
+          {
+            "section": "P1",
+            "room": "A211",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              5,
+              6,
+              7
+            ],
+            "timeRanges": [
+              "12:00-13:00",
+              "13:00-14:00",
+              "14:00-15:00"
+            ]
+          }
+        ]
+      }
+    },
+    "PHY F366": {
+      "title": "LABORATORY PROJECT",
+      "credits": 3,
+      "L": 0,
+      "P": 0,
+      "sections": {
+        "L": [],
+        "T": [],
+        "P": []
+      }
+    },
+    "PHY F367": {
+      "title": "LABORATORY PROJECT",
+      "credits": 3,
+      "L": 0,
+      "P": 0,
+      "sections": {
+        "L": [],
+        "T": [],
+        "P": []
+      }
+    },
+    "PHY F376": {
+      "title": "DESIGN PROJECT",
+      "credits": 3,
+      "L": 0,
+      "P": 0,
+      "sections": {
+        "L": [],
+        "T": [],
+        "P": []
+      }
+    },
+    "PHY F377": {
+      "title": "DESIGN PROJECT",
+      "credits": 3,
+      "L": 0,
+      "P": 0,
+      "sections": {
+        "L": [
+          {
+            "section": "L1",
+            "room": "G202",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              4,
+              9
+            ],
+            "timeRanges": [
+              "11:00-12:00",
+              "16:00-17:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "G202",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              1,
+              10
+            ],
+            "timeRanges": [
+              "08:00-09:00",
+              "17:00-18:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "G203",
+            "days": [
+              "F"
+            ],
+            "slots": [
+              1,
+              10
+            ],
+            "timeRanges": [
+              "08:00-09:00",
+              "17:00-18:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "G203",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              5,
+              11
+            ],
+            "timeRanges": [
+              "12:00-13:00",
+              "18:00-19:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "G203",
+            "days": [
+              "Th"
+            ],
+            "slots": [
+              4,
+              9
+            ],
+            "timeRanges": [
+              "11:00-12:00",
+              "16:00-17:00"
+            ]
+          },
+          {
+            "section": "L1",
+            "room": "G106",
+            "days": [
+              "T"
+            ],
+            "slots": [
+              9,
+              13
+            ],
+            "timeRanges": [
+              "16:00-17:00",
+              "UNKNOWN(13)"
+            ]
+          }
+        ],
+        "T": [],
+        "P": []
+      }
+    }
+  }
+}
