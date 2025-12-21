@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { UserProfile } from '@/types';
 import { CGPACalculator } from './CGPACalculator';
 import { Timetable } from './Timetable';
+import { TimetableGenerator } from './TimetableGenerator';
 import { AttendanceTracker } from './AttendanceTracker';
 import { CalendarView } from './CalendarView';
 import { TodoList } from './TodoList';
@@ -18,9 +19,10 @@ import {
   GraduationCap,
   Menu,
   X,
+  Wand2,
 } from 'lucide-react';
 
-type TabId = 'cgpa' | 'timetable' | 'attendance' | 'calendar' | 'todo' | 'expenses';
+type TabId = 'cgpa' | 'timetable' | 'generator' | 'attendance' | 'calendar' | 'todo' | 'expenses';
 
 interface DashboardProps {
   profile: UserProfile;
@@ -28,22 +30,25 @@ interface DashboardProps {
 }
 
 const TABS: { id: TabId; label: string; icon: React.ElementType }[] = [
-  { id: 'cgpa', label: 'CGPA Calculator', icon: Calculator },
+  { id: 'cgpa', label: 'CGPA', icon: Calculator },
+  { id: 'generator', label: 'Generator', icon: Wand2 },
   { id: 'timetable', label: 'Timetable', icon: Clock },
   { id: 'attendance', label: 'Attendance', icon: CheckSquare },
   { id: 'calendar', label: 'Calendar', icon: Calendar },
-  { id: 'todo', label: 'Todo List', icon: ListTodo },
+  { id: 'todo', label: 'Todo', icon: ListTodo },
   { id: 'expenses', label: 'Expenses', icon: Wallet },
 ];
 
 export function Dashboard({ profile, onLogout }: DashboardProps) {
-  const [activeTab, setActiveTab] = useState<TabId>('cgpa');
+  const [activeTab, setActiveTab] = useState<TabId>('generator');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const renderTabContent = () => {
     switch (activeTab) {
       case 'cgpa':
         return <CGPACalculator />;
+      case 'generator':
+        return <TimetableGenerator />;
       case 'timetable':
         return <Timetable />;
       case 'attendance':
@@ -79,7 +84,7 @@ export function Dashboard({ profile, onLogout }: DashboardProps) {
             </div>
 
             {/* Desktop Nav */}
-            <nav className="hidden lg:flex items-center gap-2">
+            <nav className="hidden xl:flex items-center gap-1">
               {TABS.map((tab) => (
                 <Button
                   key={tab.id}
@@ -88,7 +93,7 @@ export function Dashboard({ profile, onLogout }: DashboardProps) {
                   onClick={() => setActiveTab(tab.id)}
                   className={activeTab === tab.id ? 'bg-primary' : ''}
                 >
-                  <tab.icon className="w-4 h-4 mr-2" />
+                  <tab.icon className="w-4 h-4 mr-1" />
                   {tab.label}
                 </Button>
               ))}
@@ -104,7 +109,7 @@ export function Dashboard({ profile, onLogout }: DashboardProps) {
               <Button
                 variant="ghost"
                 size="icon"
-                className="lg:hidden"
+                className="xl:hidden"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               >
                 {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -114,7 +119,7 @@ export function Dashboard({ profile, onLogout }: DashboardProps) {
 
           {/* Mobile Nav */}
           {mobileMenuOpen && (
-            <nav className="lg:hidden mt-4 pb-2 grid grid-cols-2 gap-2 animate-slide-up">
+            <nav className="xl:hidden mt-4 pb-2 grid grid-cols-2 gap-2 animate-slide-up">
               {TABS.map((tab) => (
                 <Button
                   key={tab.id}
