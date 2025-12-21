@@ -1,14 +1,20 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { BranchSelector } from '@/components/BranchSelector';
+import { Dashboard } from '@/components/Dashboard';
+import { UserProfile } from '@/types';
+import { useLocalStorage } from '@/hooks/useLocalStorage';
 
 const Index = () => {
-  return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
-    </div>
-  );
+  const [profile, setProfile] = useLocalStorage<UserProfile | null>('userProfile', null);
+
+  const handleLogout = () => {
+    setProfile(null);
+  };
+
+  if (!profile) {
+    return <BranchSelector onComplete={setProfile} />;
+  }
+
+  return <Dashboard profile={profile} onLogout={handleLogout} />;
 };
 
 export default Index;
