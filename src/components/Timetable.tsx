@@ -3,9 +3,9 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
-import { CourseData, TimetableEntry, SLOT_MAP, DAYS, DAY_NAMES } from '@/types';
+import { CourseData, SLOT_MAP, DAYS, DAY_NAMES } from '@/types';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
-import { Clock, Calendar, Plus, Trash2, Search } from 'lucide-react';
+import { Clock, Calendar, Plus, Trash2, Search, Info } from 'lucide-react';
 import courseData from '@/data/courses.json';
 
 interface SelectedSection {
@@ -19,11 +19,7 @@ interface SelectedSection {
   timeRanges: string[];
 }
 
-interface TimetableProps {
-  onEntriesChange?: (entries: TimetableEntry[]) => void;
-}
-
-export function Timetable({ onEntriesChange }: TimetableProps) {
+export function Timetable() {
   const data = courseData as CourseData;
   const [selectedSections, setSelectedSections] = useLocalStorage<SelectedSection[]>('selectedSections', []);
   const [selectedCourseCode, setSelectedCourseCode] = useState('');
@@ -33,17 +29,34 @@ export function Timetable({ onEntriesChange }: TimetableProps) {
 
   const selectedCourse = selectedCourseCode ? data.courses[selectedCourseCode] : null;
 
+  // Get available section types for the selected course
+  const availableSectionTypes = useMemo(() => {
+    if (!selectedCourse?.sections) return { L: false, T: false, P: false };
+    return {
+      L: (selectedCourse.sections.L?.length || 0) > 0,
+      T: (selectedCourse.sections.T?.length || 0) > 0,
+      P: (selectedCourse.sections.P?.length || 0) > 0,
+    };
+  }, [selectedCourse]);
+
+  // Get unique section names for the selected type
   const availableSections = useMemo(() => {
-    if (!selectedCourse) return [];
-    const sections = selectedCourse.sections[selectedSectionType];
-    // Group sections by section name
-    const uniqueSections = new Map<string, typeof sections[0]>();
+    if (!selectedCourse?.sections) return [];
+    const sections = selectedCourse.sections[selectedSectionType] || [];
+    
+    // Get unique section names
+    const uniqueNames = new Set<string>();
     sections.forEach((s) => {
-      if (!uniqueSections.has(s.section)) {
-        uniqueSections.set(s.section, s);
-      }
+      if (s.section) uniqueNames.add(s.section);
     });
-    return Array.from(uniqueSections.values());
+    
+    return Array.from(uniqueNames).map((name) => {
+      const firstEntry = sections.find((s) => s.section === name);
+      return {
+        section: name,
+        room: firstEntry?.room || 'TBA',
+      };
+    });
   }, [selectedCourse, selectedSectionType]);
 
   const filteredCourses = useMemo(() => {
@@ -53,41 +66,42 @@ export function Timetable({ onEntriesChange }: TimetableProps) {
         const query = searchQuery.toLowerCase();
         return code.toLowerCase().includes(query) || course.title.toLowerCase().includes(query);
       })
-      .slice(0, 50);
+      .slice(0, 100);
   }, [data.courses, searchQuery]);
 
   const addSection = () => {
-    if (!selectedCourseCode || !selectedSectionName || !selectedCourse) return;
+    if (!selectedCourseCode || !selectedSectionName || !selectedCourse?.sections) return;
 
-    const allSectionsOfType = selectedCourse.sections[selectedSectionType].filter(
+    // Get all entries for this section name
+    const allEntries = (selectedCourse.sections[selectedSectionType] || []).filter(
       (s) => s.section === selectedSectionName
     );
 
-    const newSections: SelectedSection[] = allSectionsOfType.map((s) => ({
+    if (allEntries.length === 0) return;
+
+    // Add each entry as a separate section (same section can have multiple day/time entries)
+    const newSections: SelectedSection[] = allEntries.map((s) => ({
       courseCode: selectedCourseCode,
       courseTitle: selectedCourse.title,
       sectionType: selectedSectionType,
       section: s.section,
       room: s.room,
       days: s.days,
-      slots: s.slots.filter((slot) => slot <= 11),
+      slots: s.slots.filter((slot) => slot >= 1 && slot <= 11),
       timeRanges: s.timeRanges.filter((t) => !t.startsWith('UNKNOWN')),
     }));
 
     const updated = [...selectedSections, ...newSections];
     setSelectedSections(updated);
-    onEntriesChange?.(updated);
     setSelectedCourseCode('');
     setSelectedSectionType('L');
     setSelectedSectionName('');
+    setSearchQuery('');
   };
 
-  const removeSection = (courseCode: string, sectionType: string, section: string) => {
-    const updated = selectedSections.filter(
-      (s) => !(s.courseCode === courseCode && s.sectionType === sectionType && s.section === section)
-    );
+  const removeCourse = (courseCode: string) => {
+    const updated = selectedSections.filter((s) => s.courseCode !== courseCode);
     setSelectedSections(updated);
-    onEntriesChange?.(updated);
   };
 
   const timetableGrid = useMemo(() => {
@@ -103,7 +117,7 @@ export function Timetable({ onEntriesChange }: TimetableProps) {
     selectedSections.forEach((entry) => {
       entry.days.forEach((day) => {
         entry.slots.forEach((slot) => {
-          if (grid[day] && slot <= 11) {
+          if (grid[day] && slot >= 1 && slot <= 11) {
             grid[day][slot] = entry;
           }
         });
@@ -121,6 +135,19 @@ export function Timetable({ onEntriesChange }: TimetableProps) {
     return 'bg-accent/50 border-accent text-foreground';
   };
 
+  // Reset section type and name when course changes
+  const handleCourseChange = (code: string) => {
+    setSelectedCourseCode(code);
+    setSelectedSectionName('');
+    // Auto-select first available section type
+    const course = data.courses[code];
+    if (course?.sections) {
+      if (course.sections.L?.length > 0) setSelectedSectionType('L');
+      else if (course.sections.T?.length > 0) setSelectedSectionType('T');
+      else if (course.sections.P?.length > 0) setSelectedSectionType('P');
+    }
+  };
+
   return (
     <div className="space-y-6">
       {/* Add Section */}
@@ -133,72 +160,107 @@ export function Timetable({ onEntriesChange }: TimetableProps) {
           <Input
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search courses..."
+            placeholder="Search courses by code or name..."
             className="pl-10 bg-secondary/50 border-border/50"
           />
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
-          <Select value={selectedCourseCode} onValueChange={(v) => {
-            setSelectedCourseCode(v);
-            setSelectedSectionName('');
-          }}>
-            <SelectTrigger className="bg-secondary/50 border-border/50">
-              <SelectValue placeholder="Select course" />
-            </SelectTrigger>
-            <SelectContent className="max-h-[300px]">
-              {filteredCourses.map(([code, course]) => (
-                <SelectItem key={code} value={code}>
-                  {code} - {course.title}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {/* Course Selection */}
+          <div className="space-y-1">
+            <label className="text-xs text-muted-foreground">Course</label>
+            <Select value={selectedCourseCode} onValueChange={handleCourseChange}>
+              <SelectTrigger className="bg-secondary/50 border-border/50">
+                <SelectValue placeholder="Select course" />
+              </SelectTrigger>
+              <SelectContent className="max-h-[300px] bg-popover">
+                {filteredCourses.map(([code, course]) => (
+                  <SelectItem key={code} value={code}>
+                    {code} - {course.title}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* Section Type */}
+          <div className="space-y-1">
+            <label className="text-xs text-muted-foreground">Type</label>
+            <Select 
+              value={selectedSectionType} 
+              onValueChange={(v: 'L' | 'T' | 'P') => {
+                setSelectedSectionType(v);
+                setSelectedSectionName('');
+              }}
+              disabled={!selectedCourseCode}
+            >
+              <SelectTrigger className="bg-secondary/50 border-border/50">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent className="bg-popover">
+                <SelectItem value="L" disabled={!availableSectionTypes.L}>
+                  Lecture (L) {!availableSectionTypes.L && '- N/A'}
                 </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-
-          <Select 
-            value={selectedSectionType} 
-            onValueChange={(v: 'L' | 'T' | 'P') => {
-              setSelectedSectionType(v);
-              setSelectedSectionName('');
-            }}
-            disabled={!selectedCourseCode}
-          >
-            <SelectTrigger className="bg-secondary/50 border-border/50">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="L">Lecture (L)</SelectItem>
-              <SelectItem value="T">Tutorial (T)</SelectItem>
-              <SelectItem value="P">Practical (P)</SelectItem>
-            </SelectContent>
-          </Select>
-
-          <Select 
-            value={selectedSectionName} 
-            onValueChange={setSelectedSectionName}
-            disabled={!selectedCourseCode || availableSections.length === 0}
-          >
-            <SelectTrigger className="bg-secondary/50 border-border/50">
-              <SelectValue placeholder="Section" />
-            </SelectTrigger>
-            <SelectContent>
-              {availableSections.map((s) => (
-                <SelectItem key={s.section} value={s.section}>
-                  {s.section} - {s.room}
+                <SelectItem value="T" disabled={!availableSectionTypes.T}>
+                  Tutorial (T) {!availableSectionTypes.T && '- N/A'}
                 </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+                <SelectItem value="P" disabled={!availableSectionTypes.P}>
+                  Practical (P) {!availableSectionTypes.P && '- N/A'}
+                </SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
 
-          <Button
-            onClick={addSection}
-            disabled={!selectedCourseCode || !selectedSectionName}
-            className="bg-primary hover:bg-primary/90"
-          >
-            <Plus className="w-4 h-4 mr-2" />
-            Add
-          </Button>
+          {/* Section */}
+          <div className="space-y-1">
+            <label className="text-xs text-muted-foreground">Section</label>
+            <Select 
+              value={selectedSectionName} 
+              onValueChange={setSelectedSectionName}
+              disabled={!selectedCourseCode || availableSections.length === 0}
+            >
+              <SelectTrigger className="bg-secondary/50 border-border/50">
+                <SelectValue placeholder={availableSections.length === 0 ? "No sections" : "Select"} />
+              </SelectTrigger>
+              <SelectContent className="bg-popover">
+                {availableSections.map((s) => (
+                  <SelectItem key={s.section} value={s.section}>
+                    {s.section} ({s.room})
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* Add Button */}
+          <div className="space-y-1">
+            <label className="text-xs text-muted-foreground invisible">Action</label>
+            <Button
+              onClick={addSection}
+              disabled={!selectedCourseCode || !selectedSectionName}
+              className="w-full bg-primary hover:bg-primary/90"
+            >
+              <Plus className="w-4 h-4 mr-2" />
+              Add
+            </Button>
+          </div>
         </div>
+
+        {/* Info about selected course sections */}
+        {selectedCourse && (
+          <div className="mt-4 p-3 rounded-lg bg-secondary/30 flex items-start gap-2">
+            <Info className="w-4 h-4 text-muted-foreground mt-0.5" />
+            <div className="text-sm text-muted-foreground">
+              <span className="font-medium text-foreground">{selectedCourseCode}</span>: 
+              {availableSectionTypes.L && <span className="text-primary ml-2">L✓</span>}
+              {availableSectionTypes.T && <span className="text-warning ml-2">T✓</span>}
+              {availableSectionTypes.P && <span className="text-grade-b ml-2">P✓</span>}
+              {!availableSectionTypes.L && !availableSectionTypes.T && !availableSectionTypes.P && 
+                <span className="text-destructive ml-2">No sections available</span>
+              }
+            </div>
+          </div>
+        )}
       </Card>
 
       {/* Legend */}
@@ -243,9 +305,8 @@ export function Timetable({ onEntriesChange }: TimetableProps) {
 
             {/* Time Slots */}
             {Array.from({ length: 11 }, (_, i) => i + 1).map((slot) => (
-              <>
+              <div key={`row-${slot}`} className="contents">
                 <div
-                  key={`time-${slot}`}
                   className="flex items-center justify-center p-3 rounded-lg bg-secondary/30 text-sm text-muted-foreground"
                 >
                   {SLOT_MAP[slot]}
@@ -257,7 +318,7 @@ export function Timetable({ onEntriesChange }: TimetableProps) {
                   return (
                     <div
                       key={`${day}-${slot}`}
-                      className={`p-3 rounded-lg border transition-all duration-200 ${
+                      className={`p-3 rounded-lg border transition-all duration-200 min-h-[60px] ${
                         entry
                           ? `${colorClass} hover:scale-[1.02]`
                           : 'bg-secondary/20 border-transparent'
@@ -273,7 +334,7 @@ export function Timetable({ onEntriesChange }: TimetableProps) {
                     </div>
                   );
                 })}
-              </>
+              </div>
             ))}
           </div>
         </div>
@@ -282,12 +343,22 @@ export function Timetable({ onEntriesChange }: TimetableProps) {
       {/* Selected Sections List */}
       {selectedSections.length > 0 && (
         <Card className="glass-card p-6">
-          <h3 className="font-semibold mb-4">Selected Sections</h3>
+          <h3 className="font-semibold mb-4">Added Courses ({new Set(selectedSections.map(s => s.courseCode)).size})</h3>
           <div className="space-y-3">
             {/* Group by course */}
             {Array.from(new Set(selectedSections.map((s) => s.courseCode))).map((courseCode) => {
-              const sections = selectedSections.filter((s) => s.courseCode === courseCode);
-              const first = sections[0];
+              const courseSections = selectedSections.filter((s) => s.courseCode === courseCode);
+              const first = courseSections[0];
+              
+              // Get unique section identifiers
+              const uniqueSections = new Map<string, { type: string; section: string }>();
+              courseSections.forEach((s) => {
+                const key = `${s.sectionType}:${s.section}`;
+                if (!uniqueSections.has(key)) {
+                  uniqueSections.set(key, { type: s.sectionType, section: s.section });
+                }
+              });
+
               return (
                 <div
                   key={courseCode}
@@ -297,30 +368,24 @@ export function Timetable({ onEntriesChange }: TimetableProps) {
                     <p className="font-medium">{courseCode}</p>
                     <p className="text-sm text-muted-foreground">{first.courseTitle}</p>
                     <div className="flex flex-wrap gap-2 mt-2">
-                      {Array.from(new Set(sections.map((s) => `${s.sectionType}:${s.section}`))).map((key) => {
-                        const [type, section] = key.split(':');
-                        return (
-                          <span
-                            key={key}
-                            className={`px-2 py-0.5 rounded-full text-xs ${
-                              type === 'L' ? 'bg-primary/20 text-primary' :
-                              type === 'T' ? 'bg-warning/20 text-warning' :
-                              'bg-grade-b/20 text-grade-b'
-                            }`}
-                          >
-                            {section}
-                          </span>
-                        );
-                      })}
+                      {Array.from(uniqueSections.values()).map(({ type, section }) => (
+                        <span
+                          key={`${type}-${section}`}
+                          className={`px-2 py-0.5 rounded-full text-xs ${
+                            type === 'L' ? 'bg-primary/20 text-primary' :
+                            type === 'T' ? 'bg-warning/20 text-warning' :
+                            'bg-grade-b/20 text-grade-b'
+                          }`}
+                        >
+                          {section}
+                        </span>
+                      ))}
                     </div>
                   </div>
                   <Button
                     variant="ghost"
                     size="icon"
-                    onClick={() => {
-                      const updated = selectedSections.filter((s) => s.courseCode !== courseCode);
-                      setSelectedSections(updated);
-                    }}
+                    onClick={() => removeCourse(courseCode)}
                     className="text-destructive hover:text-destructive hover:bg-destructive/10"
                   >
                     <Trash2 className="w-4 h-4" />
