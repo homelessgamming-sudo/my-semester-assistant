@@ -5,10 +5,17 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Input } from '@/components/ui/input';
 import { ChronoData, SelectedSection, SLOT_MAP, DAYS, DAY_NAMES } from '@/types';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
-import { Clock, Calendar, Plus, Trash2, Search, Info, User } from 'lucide-react';
+import { Clock, Calendar, Plus, Trash2, Search, Info, User, AlertTriangle } from 'lucide-react';
 import rawCourseData from '@/data/chronoscript-raw.json';
 
 const courseData = rawCourseData as ChronoData;
+
+interface ClashInfo {
+  section1: SelectedSection;
+  section2: SelectedSection;
+  day: string;
+  slot: number;
+}
 
 export function Timetable() {
   const [selectedSections, setSelectedSections] = useLocalStorage<SelectedSection[]>('selectedSections', []);
@@ -17,6 +24,33 @@ export function Timetable() {
   const [searchQuery, setSearchQuery] = useState('');
 
   const selectedCourse = selectedCourseCode ? courseData.courses[selectedCourseCode] : null;
+
+  // Detect clashes
+  const clashes = useMemo(() => {
+    const clashList: ClashInfo[] = [];
+    
+    for (let i = 0; i < selectedSections.length; i++) {
+      for (let j = i + 1; j < selectedSections.length; j++) {
+        const s1 = selectedSections[i];
+        const s2 = selectedSections[j];
+        
+        // Skip if same course (multiple schedules for same section)
+        if (s1.courseCode === s2.courseCode && s1.section === s2.section) continue;
+        
+        for (const day of s1.days) {
+          if (s2.days.includes(day)) {
+            for (const slot of s1.slots) {
+              if (s2.slots.includes(slot)) {
+                clashList.push({ section1: s1, section2: s2, day, slot });
+              }
+            }
+          }
+        }
+      }
+    }
+    
+    return clashList;
+  }, [selectedSections]);
 
   // Get section types (L, T, P) and their available sections
   const availableSections = useMemo(() => {
@@ -43,7 +77,6 @@ export function Timetable() {
   const filteredCourses = useMemo(() => {
     return Object.entries(courseData.courses)
       .filter(([code, course]) => {
-        // Only show courses with sections
         if (Object.keys(course.sections).length === 0) return false;
         if (!searchQuery) return true;
         const query = searchQuery.toLowerCase();
@@ -51,6 +84,29 @@ export function Timetable() {
       })
       .slice(0, 100);
   }, [searchQuery]);
+
+  // Check if adding a section would cause clash
+  const wouldClash = useMemo(() => {
+    if (!selectedCourseCode || !selectedSectionName || !selectedCourse) return false;
+    
+    const sectionData = selectedCourse.sections[selectedSectionName];
+    if (!sectionData) return false;
+
+    for (const sched of sectionData.schedule) {
+      for (const existing of selectedSections) {
+        for (const day of sched.days) {
+          if (existing.days.includes(day)) {
+            for (const slot of sched.hours) {
+              if (existing.slots.includes(slot)) {
+                return true;
+              }
+            }
+          }
+        }
+      }
+    }
+    return false;
+  }, [selectedCourseCode, selectedSectionName, selectedCourse, selectedSections]);
 
   const addSection = () => {
     if (!selectedCourseCode || !selectedSectionName || !selectedCourse) return;
@@ -60,7 +116,6 @@ export function Timetable() {
 
     const sectionType = selectedSectionName.charAt(0) as 'L' | 'T' | 'P';
 
-    // Add each schedule entry as a separate section
     const newSections: SelectedSection[] = sectionData.schedule.map((sched) => ({
       courseCode: selectedCourseCode,
       courseTitle: selectedCourse.course_name,
@@ -85,12 +140,12 @@ export function Timetable() {
   };
 
   const timetableGrid = useMemo(() => {
-    const grid: Record<string, Record<number, SelectedSection | null>> = {};
+    const grid: Record<string, Record<number, SelectedSection[]>> = {};
     
     DAYS.forEach((day) => {
       grid[day] = {};
       for (let slot = 1; slot <= 11; slot++) {
-        grid[day][slot] = null;
+        grid[day][slot] = [];
       }
     });
 
@@ -98,7 +153,7 @@ export function Timetable() {
       entry.days.forEach((day) => {
         entry.slots.forEach((slot) => {
           if (grid[day] && slot >= 1 && slot <= 11) {
-            grid[day][slot] = entry;
+            grid[day][slot].push(entry);
           }
         });
       });
@@ -107,8 +162,9 @@ export function Timetable() {
     return grid;
   }, [selectedSections]);
 
-  const getSlotColor = (entry: SelectedSection | null) => {
+  const getSlotColor = (entry: SelectedSection | null, isClash: boolean = false) => {
     if (!entry) return '';
+    if (isClash) return 'bg-destructive/30 border-destructive text-destructive';
     if (entry.sectionType === 'L') return 'bg-primary/20 border-primary/40 text-primary';
     if (entry.sectionType === 'T') return 'bg-warning/20 border-warning/40 text-warning';
     if (entry.sectionType === 'P') return 'bg-grade-b/20 border-grade-b/40 text-grade-b';
@@ -122,11 +178,36 @@ export function Timetable() {
 
   return (
     <div className="space-y-6">
+      {/* Clash Warning */}
+      {clashes.length > 0 && (
+        <Card className="glass-card p-4 border-destructive/50 bg-destructive/10">
+          <div className="flex items-start gap-3">
+            <AlertTriangle className="w-5 h-5 text-destructive shrink-0 mt-0.5" />
+            <div>
+              <h3 className="font-semibold text-destructive">Timetable Clashes Detected!</h3>
+              <div className="mt-2 space-y-1">
+                {clashes.slice(0, 5).map((clash, i) => (
+                  <p key={i} className="text-sm text-destructive/80">
+                    <span className="font-medium">{clash.section1.courseCode} ({clash.section1.section})</span>
+                    {' '}clashes with{' '}
+                    <span className="font-medium">{clash.section2.courseCode} ({clash.section2.section})</span>
+                    {' '}on {DAY_NAMES[clash.day]} at {SLOT_MAP[clash.slot]}
+                  </p>
+                ))}
+                {clashes.length > 5 && (
+                  <p className="text-sm text-destructive/60">...and {clashes.length - 5} more clashes</p>
+                )}
+              </div>
+            </div>
+          </div>
+        </Card>
+      )}
+
       {/* Data Source Info */}
       <Card className="glass-card p-4">
         <p className="text-sm text-muted-foreground">
           📚 Data source: <span className="text-primary font-medium">BITS Hyderabad - {courseData.metadata.acadYear}-{courseData.metadata.acadYear + 1} Semester {courseData.metadata.semester}</span>
-          {' '}• Pulled from tabulr.net / chronoscript
+          {' '}• Use the Generator tab to auto-generate clash-free timetables
         </p>
       </Card>
 
@@ -134,7 +215,6 @@ export function Timetable() {
       <Card className="glass-card p-6">
         <h3 className="font-semibold mb-4">Add Course Section</h3>
         
-        {/* Search */}
         <div className="relative mb-4">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <Input
@@ -146,7 +226,6 @@ export function Timetable() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          {/* Course Selection */}
           <div className="space-y-1">
             <label className="text-xs text-muted-foreground">Course</label>
             <Select value={selectedCourseCode} onValueChange={handleCourseChange}>
@@ -163,7 +242,6 @@ export function Timetable() {
             </Select>
           </div>
 
-          {/* Section */}
           <div className="space-y-1">
             <label className="text-xs text-muted-foreground">Section</label>
             <Select 
@@ -171,7 +249,7 @@ export function Timetable() {
               onValueChange={setSelectedSectionName}
               disabled={!selectedCourseCode || availableSections.length === 0}
             >
-              <SelectTrigger className="bg-secondary/50 border-border/50">
+              <SelectTrigger className={`bg-secondary/50 border-border/50 ${wouldClash ? 'border-destructive' : ''}`}>
                 <SelectValue placeholder={availableSections.length === 0 ? "No sections" : "Select section"} />
               </SelectTrigger>
               <SelectContent className="bg-popover max-h-[300px]">
@@ -189,22 +267,31 @@ export function Timetable() {
             </Select>
           </div>
 
-          {/* Add Button */}
           <div className="space-y-1">
             <label className="text-xs text-muted-foreground invisible">Action</label>
             <Button
               onClick={addSection}
               disabled={!selectedCourseCode || !selectedSectionName}
-              className="w-full bg-primary hover:bg-primary/90"
+              className={`w-full ${wouldClash ? 'bg-destructive hover:bg-destructive/90' : 'bg-primary hover:bg-primary/90'}`}
             >
+              {wouldClash && <AlertTriangle className="w-4 h-4 mr-2" />}
               <Plus className="w-4 h-4 mr-2" />
-              Add
+              {wouldClash ? 'Add (Clash!)' : 'Add'}
             </Button>
           </div>
         </div>
 
-        {/* Info about selected course sections */}
-        {selectedCourse && (
+        {/* Clash warning for selected section */}
+        {wouldClash && (
+          <div className="mt-3 p-3 rounded-lg bg-destructive/20 border border-destructive/30">
+            <div className="flex items-center gap-2 text-destructive text-sm">
+              <AlertTriangle className="w-4 h-4" />
+              <span>This section will clash with existing courses in your timetable!</span>
+            </div>
+          </div>
+        )}
+
+        {selectedCourse && !wouldClash && (
           <div className="mt-4 p-3 rounded-lg bg-secondary/30">
             <div className="flex items-start gap-2">
               <Info className="w-4 h-4 text-muted-foreground mt-0.5 shrink-0" />
@@ -246,6 +333,10 @@ export function Timetable() {
             <div className="w-4 h-4 rounded bg-grade-b/20 border border-grade-b/40" />
             <span className="text-sm text-muted-foreground">Practical (P)</span>
           </div>
+          <div className="flex items-center gap-2">
+            <div className="w-4 h-4 rounded bg-destructive/30 border border-destructive" />
+            <span className="text-sm text-muted-foreground">Clash</span>
+          </div>
         </div>
       </Card>
 
@@ -258,7 +349,6 @@ export function Timetable() {
         
         <div className="min-w-[800px]">
           <div className="grid grid-cols-[100px_repeat(6,1fr)] gap-2">
-            {/* Header */}
             <div className="flex items-center justify-center p-3 rounded-lg bg-secondary/50 font-semibold">
               <Clock className="w-4 h-4" />
             </div>
@@ -271,7 +361,6 @@ export function Timetable() {
               </div>
             ))}
 
-            {/* Time Slots */}
             {Array.from({ length: 11 }, (_, i) => i + 1).map((slot) => (
               <div key={`row-${slot}`} className="contents">
                 <div
@@ -280,8 +369,10 @@ export function Timetable() {
                   {SLOT_MAP[slot]}
                 </div>
                 {DAYS.map((day) => {
-                  const entry = timetableGrid[day][slot];
-                  const colorClass = getSlotColor(entry);
+                  const entries = timetableGrid[day][slot];
+                  const isClash = entries.length > 1;
+                  const entry = entries[0] || null;
+                  const colorClass = getSlotColor(entry, isClash);
                   
                   return (
                     <div
@@ -292,7 +383,13 @@ export function Timetable() {
                           : 'bg-secondary/20 border-transparent'
                       }`}
                     >
-                      {entry && (
+                      {isClash ? (
+                        <div className="text-center">
+                          <AlertTriangle className="w-4 h-4 mx-auto mb-1" />
+                          <p className="font-semibold text-xs">CLASH</p>
+                          <p className="text-[10px]">{entries.length} courses</p>
+                        </div>
+                      ) : entry && (
                         <div className="text-center">
                           <p className="font-semibold text-sm">{entry.courseCode}</p>
                           <p className="text-xs opacity-80">{entry.section}</p>
@@ -313,12 +410,10 @@ export function Timetable() {
         <Card className="glass-card p-6">
           <h3 className="font-semibold mb-4">Added Courses ({new Set(selectedSections.map(s => s.courseCode)).size})</h3>
           <div className="space-y-3">
-            {/* Group by course */}
             {Array.from(new Set(selectedSections.map((s) => s.courseCode))).map((courseCode) => {
               const courseSections = selectedSections.filter((s) => s.courseCode === courseCode);
               const first = courseSections[0];
               
-              // Get unique section identifiers
               const uniqueSections = new Map<string, { type: string; section: string; instructor: string[] }>();
               courseSections.forEach((s) => {
                 const key = `${s.sectionType}:${s.section}`;
@@ -327,13 +422,25 @@ export function Timetable() {
                 }
               });
 
+              // Check if this course has clashes
+              const hasClash = clashes.some(
+                (c) => c.section1.courseCode === courseCode || c.section2.courseCode === courseCode
+              );
+
               return (
                 <div
                   key={courseCode}
-                  className="flex items-center justify-between p-4 rounded-xl bg-secondary/50 border border-border/30"
+                  className={`flex items-center justify-between p-4 rounded-xl border ${
+                    hasClash 
+                      ? 'bg-destructive/10 border-destructive/30' 
+                      : 'bg-secondary/50 border-border/30'
+                  }`}
                 >
                   <div className="flex-1">
-                    <p className="font-medium">{courseCode}</p>
+                    <div className="flex items-center gap-2">
+                      <p className="font-medium">{courseCode}</p>
+                      {hasClash && <AlertTriangle className="w-4 h-4 text-destructive" />}
+                    </div>
                     <p className="text-sm text-muted-foreground">{first.courseTitle}</p>
                     <div className="flex flex-wrap gap-2 mt-2">
                       {Array.from(uniqueSections.values()).map(({ type, section, instructor }) => (
