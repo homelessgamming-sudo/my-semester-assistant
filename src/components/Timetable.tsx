@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { ChronoData, SelectedSection, SLOT_MAP, DAYS, DAY_NAMES } from '@/types';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { Clock, Calendar, Plus, Trash2, Search, Info, User, AlertTriangle, GraduationCap } from 'lucide-react';
-import rawCourseData from '@/data/timetable-2025-26-2.json';
+import rawCourseData from '@/data/chronoscript-raw.json';
 
 const courseData = rawCourseData as ChronoData;
 
