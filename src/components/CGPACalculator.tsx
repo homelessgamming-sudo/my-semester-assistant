@@ -8,20 +8,17 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ChronoData, SemesterRecord, GRADES } from '@/types';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { Plus, Trash2, Calculator, BookOpen, TrendingUp, Search, ChevronDown, ChevronUp } from 'lucide-react';
-import cgpaCourseData from '@/data/courses-cgpa.json';
+import cgpaCourseData from '@/data/unique_courses_with_credits.json';
 
 // CGPA-specific course data structure
 interface CGPACourse {
-  title: string;
+  courseTitle: string;
   credits: number;
-  L: number;
-  P: number;
-  sections: unknown;
 }
 
 interface CGPAData {
-  semester: string;
-  slotMap: Record<string, string>;
+  totalCourses: number;
+  totalCredits: number;
   courses: Record<string, CGPACourse>;
 }
 
@@ -71,7 +68,7 @@ export function CGPACalculator() {
 
     const newCourse = {
       courseCode: selectedCourseCode,
-      courseTitle: course.title,
+      courseTitle: course.courseTitle,
       credits: course.credits,
       grade: selectedGrade,
     };
@@ -141,7 +138,7 @@ export function CGPACalculator() {
       .filter(([code, course]) => {
         if (!searchQuery) return true;
         const query = searchQuery.toLowerCase();
-        return code.toLowerCase().includes(query) || course.title.toLowerCase().includes(query);
+        return code.toLowerCase().includes(query) || course.courseTitle.toLowerCase().includes(query);
       })
       .slice(0, 100);
   }, [currentSemesterRecord, searchQuery]);
@@ -253,7 +250,7 @@ export function CGPACalculator() {
                     <SelectContent className="max-h-[300px] bg-popover">
                       {availableCourses.map(([code, course]) => (
                         <SelectItem key={code} value={code}>
-                          {code} - {course.title} ({course.credits} cr)
+                          {code} - {course.courseTitle} ({course.credits} cr)
                         </SelectItem>
                       ))}
                     </SelectContent>
