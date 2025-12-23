@@ -7,7 +7,7 @@ import { Switch } from '@/components/ui/switch';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
 import { ChronoData, SelectedSection, SLOT_MAP, DAYS, DAY_NAMES } from '@/types';
-import { useLocalStorage } from '@/hooks/useLocalStorage';
+import { useFirestoreData } from '@/hooks/useFirestoreData';
 import { 
   Wand2, Plus, Trash2, Search, AlertTriangle, Clock, Calendar, 
   Settings2, ChevronLeft, ChevronRight, Check, X, User
@@ -39,7 +39,7 @@ interface GeneratedTimetable {
 }
 
 export function TimetableGenerator() {
-  const [, setSelectedSections] = useLocalStorage<SelectedSection[]>('selectedSections', []);
+  const [, setSelectedSections] = useFirestoreData<SelectedSection[]>('selectedSections', []);
   const [selectedCourses, setSelectedCourses] = useState<CourseSelection[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCourseCode, setSelectedCourseCode] = useState('');

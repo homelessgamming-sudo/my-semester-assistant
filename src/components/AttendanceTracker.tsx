@@ -2,8 +2,8 @@ import { useMemo } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { SelectedSection, DAY_NAMES, SLOT_MAP } from '@/types';
-import { useLocalStorage } from '@/hooks/useLocalStorage';
-import { Check, X, Ban, RotateCcw, Calendar, Clock, MapPin, User } from 'lucide-react';
+import { useFirestoreData } from '@/hooks/useFirestoreData';
+import { Check, X, Ban, RotateCcw, Calendar, Clock, MapPin, User, Loader2 } from 'lucide-react';
 
 interface AttendanceRecord {
   date: string;
@@ -14,8 +14,8 @@ interface AttendanceRecord {
 }
 
 export function AttendanceTracker() {
-  const [selectedSections] = useLocalStorage<SelectedSection[]>('selectedSections', []);
-  const [attendanceRecords, setAttendanceRecords] = useLocalStorage<AttendanceRecord[]>('attendanceRecords', []);
+  const [selectedSections, , sectionsLoading] = useFirestoreData<SelectedSection[]>('selectedSections', []);
+  const [attendanceRecords, setAttendanceRecords, attendanceLoading] = useFirestoreData<AttendanceRecord[]>('attendanceRecords', []);
 
   const today = new Date();
   const dayIndex = today.getDay();
@@ -100,6 +100,17 @@ export function AttendanceTracker() {
     
     return { present, absent, cancelled, percentage };
   }, [attendanceRecords]);
+
+  const isLoading = sectionsLoading || attendanceLoading;
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        <span className="ml-2 text-muted-foreground">Loading attendance data...</span>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">

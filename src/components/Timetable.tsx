@@ -4,8 +4,8 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
 import { ChronoData, SelectedSection, SLOT_MAP, DAYS, DAY_NAMES } from '@/types';
-import { useLocalStorage } from '@/hooks/useLocalStorage';
-import { Clock, Calendar, Plus, Trash2, Search, Info, User, AlertTriangle, GraduationCap } from 'lucide-react';
+import { useFirestoreData } from '@/hooks/useFirestoreData';
+import { Clock, Calendar, Plus, Trash2, Search, Info, User, AlertTriangle, GraduationCap, Loader2 } from 'lucide-react';
 import rawCourseData from '@/data/chronoscript-raw.json';
 
 const courseData = rawCourseData as ChronoData;
@@ -55,7 +55,7 @@ const formatExamTime = (isoString: string): string => {
 };
 
 export function Timetable() {
-  const [selectedSections, setSelectedSections] = useLocalStorage<SelectedSection[]>('selectedSections', []);
+  const [selectedSections, setSelectedSections, isLoading] = useFirestoreData<SelectedSection[]>('selectedSections', []);
   const [selectedCourseCode, setSelectedCourseCode] = useState('');
   const [selectedSectionName, setSelectedSectionName] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
@@ -259,6 +259,15 @@ export function Timetable() {
     setSelectedCourseCode(code);
     setSelectedSectionName('');
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        <span className="ml-2 text-muted-foreground">Loading your timetable...</span>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">

@@ -5,8 +5,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { CalendarEvent, ChronoData, SelectedSection } from '@/types';
-import { useLocalStorage } from '@/hooks/useLocalStorage';
-import { ChevronLeft, ChevronRight, Plus, X, Calendar as CalendarIcon, GraduationCap, BookOpen } from 'lucide-react';
+import { useFirestoreData } from '@/hooks/useFirestoreData';
+import { ChevronLeft, ChevronRight, Plus, X, Calendar as CalendarIcon, GraduationCap, BookOpen, Loader2 } from 'lucide-react';
 import rawCourseData from '@/data/chronoscript-raw.json';
 
 const courseData = rawCourseData as ChronoData;
@@ -36,8 +36,8 @@ const parseExamTime = (isoString: string): { start: Date; end: Date } | null => 
 };
 
 export function CalendarView() {
-  const [events, setEvents] = useLocalStorage<CalendarEvent[]>('calendarEvents', []);
-  const [selectedSections] = useLocalStorage<SelectedSection[]>('selectedSections', []);
+  const [events, setEvents, eventsLoading] = useFirestoreData<CalendarEvent[]>('calendarEvents', []);
+  const [selectedSections, , sectionsLoading] = useFirestoreData<SelectedSection[]>('selectedSections', []);
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const [showAddEvent, setShowAddEvent] = useState(false);
@@ -179,6 +179,17 @@ export function CalendarView() {
     const now = new Date();
     return examEvents.filter(e => e.date >= now).slice(0, 10);
   }, [examEvents]);
+
+  const isLoading = eventsLoading || sectionsLoading;
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        <span className="ml-2 text-muted-foreground">Loading calendar data...</span>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
