@@ -7,7 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
-import { A_SERIES_BRANCHES, B_SERIES_BRANCHES, A_SERIES_SEMESTERS, B_SERIES_SEMESTERS } from '@/types';
+import { A_SERIES_BRANCHES, B_SERIES_BRANCHES } from '@/types';
 import { GraduationCap, LogIn, UserPlus } from 'lucide-react';
 
 const Auth = () => {
@@ -16,7 +16,6 @@ const Auth = () => {
   const [password, setPassword] = useState('');
   const [primaryBranch, setPrimaryBranch] = useState('');
   const [dualBranch, setDualBranch] = useState('');
-  const [semester, setSemester] = useState('');
   const [loading, setLoading] = useState(false);
   
   const { signIn, signUp } = useAuth();
@@ -24,8 +23,6 @@ const Auth = () => {
   const navigate = useNavigate();
 
   const allBranches = [...A_SERIES_BRANCHES, ...B_SERIES_BRANCHES];
-  const isASeries = A_SERIES_BRANCHES.includes(primaryBranch);
-  const semesters = isASeries ? A_SERIES_SEMESTERS : B_SERIES_SEMESTERS;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,15 +33,15 @@ const Auth = () => {
         await signIn(email, password);
         toast({ title: 'Welcome back!', description: 'Successfully logged in.' });
       } else {
-        if (!primaryBranch || !semester) {
-          toast({ title: 'Error', description: 'Please select your branch and semester.', variant: 'destructive' });
+        if (!primaryBranch) {
+          toast({ title: 'Error', description: 'Please select your branch.', variant: 'destructive' });
           setLoading(false);
           return;
         }
         await signUp(email, password, {
           primaryBranch,
           dualBranch: dualBranch || undefined,
-          semester
+          semester: ''
         });
         toast({ title: 'Account created!', description: 'Welcome to BPHC Dashboard.' });
       }
@@ -109,10 +106,7 @@ const Auth = () => {
               <>
                 <div className="space-y-2">
                   <Label>Primary Branch</Label>
-                  <Select value={primaryBranch} onValueChange={(value) => {
-                    setPrimaryBranch(value);
-                    setSemester('');
-                  }}>
+                  <Select value={primaryBranch} onValueChange={setPrimaryBranch}>
                     <SelectTrigger>
                       <SelectValue placeholder="Select your branch" />
                     </SelectTrigger>
@@ -139,21 +133,6 @@ const Auth = () => {
                   </Select>
                 </div>
 
-                {primaryBranch && (
-                  <div className="space-y-2">
-                    <Label>Current Semester</Label>
-                    <Select value={semester} onValueChange={setSemester}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select semester" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {semesters.map(sem => (
-                          <SelectItem key={sem} value={sem}>{sem}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                )}
               </>
             )}
 

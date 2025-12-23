@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
-import { A_SERIES_BRANCHES, B_SERIES_BRANCHES, A_SERIES_SEMESTERS, B_SERIES_SEMESTERS, UserProfile } from '@/types';
+import { A_SERIES_BRANCHES, B_SERIES_BRANCHES, UserProfile } from '@/types';
 import { GraduationCap, Sparkles } from 'lucide-react';
 
 interface BranchSelectorProps {
@@ -13,23 +13,21 @@ interface BranchSelectorProps {
 export function BranchSelector({ onComplete }: BranchSelectorProps) {
   const [primaryBranch, setPrimaryBranch] = useState('');
   const [dualBranch, setDualBranch] = useState('');
-  const [semester, setSemester] = useState('');
 
   const isBSeries = B_SERIES_BRANCHES.includes(primaryBranch);
-  const semesters = isBSeries ? B_SERIES_SEMESTERS : A_SERIES_SEMESTERS;
 
   const handleSubmit = () => {
-    if (!primaryBranch || !semester) return;
+    if (!primaryBranch) return;
     if (isBSeries && !dualBranch) return;
 
     onComplete({
       primaryBranch,
       dualBranch: isBSeries ? dualBranch : undefined,
-      semester,
+      semester: '',
     });
   };
 
-  const isValid = primaryBranch && semester && (!isBSeries || dualBranch);
+  const isValid = primaryBranch && (!isBSeries || dualBranch);
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-background">
@@ -53,7 +51,6 @@ export function BranchSelector({ onComplete }: BranchSelectorProps) {
             <Select value={primaryBranch} onValueChange={(v) => {
               setPrimaryBranch(v);
               setDualBranch('');
-              setSemester('');
             }}>
               <SelectTrigger className="bg-secondary/50 border-border/50 h-12">
                 <SelectValue placeholder="Select your branch" />
@@ -87,19 +84,6 @@ export function BranchSelector({ onComplete }: BranchSelectorProps) {
             </div>
           )}
 
-          <div className="space-y-2">
-            <Label className="text-sm font-medium">Semester</Label>
-            <Select value={semester} onValueChange={setSemester} disabled={!primaryBranch}>
-              <SelectTrigger className="bg-secondary/50 border-border/50 h-12">
-                <SelectValue placeholder="Select semester" />
-              </SelectTrigger>
-              <SelectContent>
-                {semesters.map((sem) => (
-                  <SelectItem key={sem} value={sem}>{sem}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
 
           <Button
             onClick={handleSubmit}
