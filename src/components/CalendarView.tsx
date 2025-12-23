@@ -27,6 +27,30 @@ interface ExamEvent {
   timeStr: string;
 }
 
+interface AcademicEvent {
+  id: string;
+  title: string;
+  type: 'midsem-period' | 'compre-period' | 'semester-end' | 'holiday';
+  startDate: string; // YYYY-MM-DD
+  endDate?: string; // YYYY-MM-DD for multi-day events
+}
+
+// Academic Calendar 2025-26 Second Semester
+const ACADEMIC_CALENDAR_2026: AcademicEvent[] = [
+  { id: 'midsem-test', title: 'Mid-Semester Test', type: 'midsem-period', startDate: '2026-03-24', endDate: '2026-03-27' },
+  { id: 'midsem-grading', title: 'Last day of Mid-Semester grading', type: 'midsem-period', startDate: '2026-03-27' },
+  { id: 'compre-begins', title: 'Comprehensive Exams Begin', type: 'compre-period', startDate: '2026-05-06' },
+  { id: 'sem-ends', title: 'Second Semester Ends', type: 'semester-end', startDate: '2026-05-19' },
+  { id: 'holi', title: 'Holi', type: 'holiday', startDate: '2026-03-04' },
+  { id: 'ugadi', title: 'Ugadi', type: 'holiday', startDate: '2026-03-19' },
+  { id: 'id-ul-fitr', title: 'Id-ul-Fitr', type: 'holiday', startDate: '2026-03-21' },
+  { id: 'ram-navami', title: 'Ram Navami', type: 'holiday', startDate: '2026-03-26' },
+  { id: 'good-friday', title: 'Good Friday', type: 'holiday', startDate: '2026-04-03' },
+  { id: 'ambedkar-jayanti', title: 'Ambedkar Jayanti', type: 'holiday', startDate: '2026-04-14' },
+  { id: 'buddha-purnima', title: 'Buddha Purnima', type: 'holiday', startDate: '2026-05-01' },
+  { id: 'id-ul-zuha', title: 'Id-ul-Zuha', type: 'holiday', startDate: '2026-05-26' },
+];
+
 // Parse ISO exam date
 const parseExamTime = (isoString: string): { start: Date; end: Date } | null => {
   if (!isoString) return null;
@@ -144,6 +168,16 @@ export function CalendarView() {
     return examEvents.filter((e) => e.dateStr === dateStr);
   };
 
+  const getAcademicEventsForDate = (day: number) => {
+    const dateStr = formatDate(day);
+    return ACADEMIC_CALENDAR_2026.filter((e) => {
+      if (e.endDate) {
+        return dateStr >= e.startDate && dateStr <= e.endDate;
+      }
+      return e.startDate === dateStr;
+    });
+  };
+
   const addEvent = () => {
     if (!selectedDate || !newEventTitle.trim()) return;
 
@@ -179,6 +213,16 @@ export function CalendarView() {
     const now = new Date();
     return examEvents.filter(e => e.date >= now).slice(0, 10);
   }, [examEvents]);
+
+  // Get upcoming academic events
+  const upcomingAcademicEvents = useMemo(() => {
+    const now = new Date();
+    const nowStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+    return ACADEMIC_CALENDAR_2026
+      .filter(e => e.startDate >= nowStr)
+      .sort((a, b) => a.startDate.localeCompare(b.startDate))
+      .slice(0, 8);
+  }, []);
 
   const isLoading = eventsLoading || sectionsLoading;
 
@@ -250,6 +294,66 @@ export function CalendarView() {
         </Card>
       )}
 
+      {/* Upcoming Academic Dates */}
+      {upcomingAcademicEvents.length > 0 && (
+        <Card className="glass-card p-6">
+          <div className="flex items-center gap-3 mb-4">
+            <CalendarIcon className="w-5 h-5 text-primary" />
+            <h3 className="font-semibold">Academic Calendar</h3>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            {upcomingAcademicEvents.map((event) => (
+              <div
+                key={event.id}
+                className={`flex items-center justify-between p-3 rounded-lg border ${
+                  event.type === 'holiday'
+                    ? 'bg-success/10 border-success/30'
+                    : event.type === 'midsem-period'
+                    ? 'bg-warning/10 border-warning/30'
+                    : event.type === 'compre-period'
+                    ? 'bg-destructive/10 border-destructive/30'
+                    : 'bg-accent/10 border-accent/30'
+                }`}
+              >
+                <div className="flex items-center gap-3">
+                  <div className={`p-2 rounded-lg ${
+                    event.type === 'holiday' ? 'bg-success/20' :
+                    event.type === 'midsem-period' ? 'bg-warning/20' :
+                    event.type === 'compre-period' ? 'bg-destructive/20' :
+                    'bg-accent/20'
+                  }`}>
+                    <CalendarIcon className={`w-4 h-4 ${
+                      event.type === 'holiday' ? 'text-success' :
+                      event.type === 'midsem-period' ? 'text-warning' :
+                      event.type === 'compre-period' ? 'text-destructive' :
+                      'text-accent-foreground'
+                    }`} />
+                  </div>
+                  <div>
+                    <p className="font-medium text-sm">{event.title}</p>
+                    <p className="text-xs text-muted-foreground uppercase">
+                      {event.type === 'holiday' ? 'Holiday' : 
+                       event.type === 'midsem-period' ? 'Midsem' :
+                       event.type === 'compre-period' ? 'Compre' : 'Important'}
+                    </p>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <p className="text-sm font-medium">
+                    {new Date(event.startDate + 'T00:00:00').toLocaleDateString('en-IN', { day: '2-digit', month: 'short' })}
+                  </p>
+                  {event.endDate && (
+                    <p className="text-xs text-muted-foreground">
+                      to {new Date(event.endDate + 'T00:00:00').toLocaleDateString('en-IN', { day: '2-digit', month: 'short' })}
+                    </p>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </Card>
+      )}
+
       {/* Month/Year Selector */}
       <Card className="glass-card p-4">
         <div className="flex items-center justify-between gap-4">
@@ -306,6 +410,14 @@ export function CalendarView() {
             <div className="w-4 h-4 rounded bg-primary/30 border border-primary/50" />
             <span className="text-sm text-muted-foreground">Custom Event</span>
           </div>
+          <div className="flex items-center gap-2">
+            <div className="w-4 h-4 rounded bg-success/30 border border-success/50" />
+            <span className="text-sm text-muted-foreground">Holiday</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-4 h-4 rounded bg-accent border border-accent" />
+            <span className="text-sm text-muted-foreground">Academic Date</span>
+          </div>
         </div>
       </Card>
 
@@ -332,9 +444,14 @@ export function CalendarView() {
             const day = i + 1;
             const dayEvents = getEventsForDate(day);
             const dayExams = getExamsForDate(day);
+            const academicEvents = getAcademicEventsForDate(day);
             const dateStr = formatDate(day);
             const hasMidsem = dayExams.some(e => e.type === 'midsem');
             const hasCompre = dayExams.some(e => e.type === 'compre');
+            const hasMidsemPeriod = academicEvents.some(e => e.type === 'midsem-period');
+            const hasComprePeriod = academicEvents.some(e => e.type === 'compre-period');
+            const hasSemEnd = academicEvents.some(e => e.type === 'semester-end');
+            const hasHoliday = academicEvents.some(e => e.type === 'holiday');
 
             return (
               <div
@@ -346,20 +463,41 @@ export function CalendarView() {
                 className={`aspect-square p-1 rounded-lg border cursor-pointer transition-all duration-200 hover:border-primary/50 ${
                   isToday(day)
                     ? 'bg-primary/20 border-primary/40'
-                    : hasCompre
+                    : hasCompre || hasComprePeriod
                     ? 'bg-destructive/10 border-destructive/30'
-                    : hasMidsem
+                    : hasMidsem || hasMidsemPeriod
                     ? 'bg-warning/10 border-warning/30'
+                    : hasSemEnd
+                    ? 'bg-accent/20 border-accent'
+                    : hasHoliday
+                    ? 'bg-success/10 border-success/30'
                     : 'bg-secondary/30 border-transparent'
                 }`}
               >
                 <div className="h-full flex flex-col">
-                  <span className={`text-sm font-medium ${isToday(day) ? 'text-primary' : ''}`}>
+                  <span className={`text-sm font-medium ${isToday(day) ? 'text-primary' : hasHoliday ? 'text-success' : ''}`}>
                     {day}
                   </span>
                   <div className="flex-1 overflow-hidden space-y-0.5">
-                    {/* Exams first */}
-                    {dayExams.slice(0, 2).map((exam) => (
+                    {/* Academic calendar events first */}
+                    {academicEvents.slice(0, 1).map((event) => (
+                      <div
+                        key={event.id}
+                        className={`text-xs truncate px-1 py-0.5 rounded ${
+                          event.type === 'holiday'
+                            ? 'bg-success/30 text-success'
+                            : event.type === 'midsem-period'
+                            ? 'bg-warning/30 text-warning'
+                            : event.type === 'compre-period'
+                            ? 'bg-destructive/30 text-destructive'
+                            : 'bg-accent text-accent-foreground'
+                        }`}
+                      >
+                        {event.title}
+                      </div>
+                    ))}
+                    {/* Course exams */}
+                    {academicEvents.length < 2 && dayExams.slice(0, 2 - academicEvents.length).map((exam) => (
                       <div
                         key={exam.id}
                         className={`text-xs truncate px-1 py-0.5 rounded ${
@@ -372,7 +510,7 @@ export function CalendarView() {
                       </div>
                     ))}
                     {/* Custom events */}
-                    {dayExams.length < 2 && dayEvents.slice(0, 2 - dayExams.length).map((event) => (
+                    {(academicEvents.length + dayExams.length) < 2 && dayEvents.slice(0, 2 - academicEvents.length - dayExams.length).map((event) => (
                       <div
                         key={event.id}
                         className="text-xs truncate px-1 py-0.5 rounded bg-primary/30 text-primary"
@@ -380,9 +518,9 @@ export function CalendarView() {
                         {event.title}
                       </div>
                     ))}
-                    {(dayEvents.length + dayExams.length) > 2 && (
+                    {(dayEvents.length + dayExams.length + academicEvents.length) > 2 && (
                       <div className="text-xs text-muted-foreground px-1">
-                        +{dayEvents.length + dayExams.length - 2} more
+                        +{dayEvents.length + dayExams.length + academicEvents.length - 2} more
                       </div>
                     )}
                   </div>
