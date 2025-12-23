@@ -37,9 +37,8 @@ interface AcademicEvent {
 
 // Academic Calendar 2025-26 Second Semester
 const ACADEMIC_CALENDAR_2026: AcademicEvent[] = [
-  { id: 'midsem-test', title: 'Mid-Semester Test', type: 'midsem-period', startDate: '2026-03-24', endDate: '2026-03-27' },
-  { id: 'midsem-grading', title: 'Last day of Mid-Semester grading', type: 'midsem-period', startDate: '2026-03-27' },
-  { id: 'compre-begins', title: 'Comprehensive Exams Begin', type: 'compre-period', startDate: '2026-05-06' },
+  { id: 'midsem-test', title: 'Mid-Semester Exams', type: 'midsem-period', startDate: '2026-03-09', endDate: '2026-03-14' },
+  { id: 'compre-exams', title: 'Comprehensive Exams', type: 'compre-period', startDate: '2026-05-02', endDate: '2026-05-16' },
   { id: 'sem-ends', title: 'Second Semester Ends', type: 'semester-end', startDate: '2026-05-19' },
   { id: 'holi', title: 'Holi', type: 'holiday', startDate: '2026-03-04' },
   { id: 'ugadi', title: 'Ugadi', type: 'holiday', startDate: '2026-03-19' },
