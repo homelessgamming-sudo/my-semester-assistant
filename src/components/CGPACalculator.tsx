@@ -4,10 +4,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ChronoData, SemesterRecord, GRADES } from '@/types';
-import { useLocalStorage } from '@/hooks/useLocalStorage';
-import { Plus, Trash2, Calculator, BookOpen, TrendingUp, Search, ChevronDown, ChevronUp } from 'lucide-react';
+import { SemesterRecord, GRADES } from '@/types';
+import { useFirestoreData } from '@/hooks/useFirestoreData';
+import { Plus, Trash2, Calculator, BookOpen, TrendingUp, Search, ChevronDown, ChevronUp, Loader2 } from 'lucide-react';
 import cgpaCourseData from '@/data/unique_courses_with_credits.json';
 
 // CGPA-specific course data structure
@@ -29,7 +28,7 @@ const SEMESTER_OPTIONS = [
 ];
 
 export function CGPACalculator() {
-  const [semesterRecords, setSemesterRecords] = useLocalStorage<SemesterRecord[]>('semesterRecords', []);
+  const [semesterRecords, setSemesterRecords, isLoading] = useFirestoreData<SemesterRecord[]>('semesterRecords', []);
   const [activeSemester, setActiveSemester] = useState('');
   const [selectedCourseCode, setSelectedCourseCode] = useState('');
   const [selectedGrade, setSelectedGrade] = useState('');
@@ -159,6 +158,15 @@ export function CGPACalculator() {
       return indexA - indexB;
     });
   }, [semesterRecords]);
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        <span className="ml-2 text-muted-foreground">Loading your CGPA data...</span>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
